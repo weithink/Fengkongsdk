@@ -1,0 +1,3 @@
+rootProject.name='Fengkong sdk'
+include ':app'
+include ':fengkong'
