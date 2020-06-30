@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 
-import com.weithink.fengkong.Contents;
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.bean.CallsInfo;
 import com.weithink.fengkong.bean.ContactsInfo;
@@ -62,7 +62,7 @@ public class ContactsApi {
         ContentResolver contentResolver = context.getContentResolver();
 
         try {
-            Cursor cursor = contentResolver.query(Contents.CALLURI, new String[]{"_id", "via_number", "name", "number", "duration", "type", "date"}, null, null, null);
+            Cursor cursor = contentResolver.query(Constants.CALLURI, new String[]{"_id", "via_number", "name", "number", "duration", "type", "date"}, null, null, null);
             try {
                 while (cursor != null && cursor.moveToNext()) {
                     CallsInfo callsInfo = new CallsInfo();

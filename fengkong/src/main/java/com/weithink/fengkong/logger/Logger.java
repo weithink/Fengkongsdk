@@ -2,13 +2,12 @@ package com.weithink.fengkong.logger;
 
 import android.util.Log;
 
-import com.weithink.fengkong.Contents;
 import com.weithink.fengkong.util.Util;
 
 import java.util.Arrays;
 import java.util.Locale;
 
-import static com.weithink.fengkong.Contents.LOGTAG;
+import static com.weithink.fengkong.Constants.LOGTAG;
 
 public class Logger implements ILogger {
     private LogLevel logLevel;

@@ -35,9 +35,5 @@
             android:name=".MainActivity"
             android:theme="@style/actTranslucentTheme"
             />
-
-        <service android:name=".services.CollectService"
-            />
-
     </application>
 </manifest>

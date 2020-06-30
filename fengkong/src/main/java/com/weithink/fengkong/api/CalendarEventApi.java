@@ -3,7 +3,7 @@ package com.weithink.fengkong.api;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.weithink.fengkong.Contents;
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.bean.CalEventInfo;
 
@@ -15,7 +15,7 @@ public class CalendarEventApi {
     public static List<CalEventInfo> getCalendarEventList(Context context) {
         List<CalEventInfo> resultList = new ArrayList<>();
         try {
-            Cursor cursor = context.getContentResolver().query(Contents.CALENDAREVENT_URI, new String[]{"_id", "title", "description", "dtstart", "dtend", "eventLocation"}, null, null, null);
+            Cursor cursor = context.getContentResolver().query(Constants.CALENDAREVENT_URI, new String[]{"_id", "title", "description", "dtstart", "dtend", "eventLocation"}, null, null, null);
             try {
                 while (cursor != null && cursor.moveToNext()) {
                     CalEventInfo eventList = new CalEventInfo();

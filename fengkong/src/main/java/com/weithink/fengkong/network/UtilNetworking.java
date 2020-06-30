@@ -2,11 +2,10 @@ package com.weithink.fengkong.network;
 
 import android.util.Log;
 
-import com.weithink.fengkong.Contents;
-
-import org.json.JSONObject;
+import com.weithink.fengkong.Constants;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +18,8 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -27,7 +28,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import static com.weithink.fengkong.Contents.ONE_MINUTE;
+import static com.weithink.fengkong.Constants.ONE_MINUTE;
 
 public class UtilNetworking {
     static ConnectionOptions connectionOptions;
@@ -38,15 +39,15 @@ public class UtilNetworking {
 
 
     public static UtilNetworking.HttpResponse sendPostI(String path) {
-        return sendPostI(path, null,  null);
+        return sendPostI(path, null, null);
     }
 
     public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk) {
-        return sendPostI(path, clientSdk,  null);
+        return sendPostI(path, clientSdk, null);
     }
 
-    public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk,  Object postBody) {
-        String targetURL = Contents.baseUrl + path;
+    public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk, Object postBody) {
+        String targetURL = Constants.baseUrl + path;
 
         try {
             connectionOptions.clientSdk = clientSdk;
@@ -139,7 +140,8 @@ public class UtilNetworking {
             }
             //Inject local ip address for Jenkins script
             connection.setRequestProperty("Local-Ip", getIPAddress(true));
-            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            connection.setRequestProperty("Accept-Encoding", "gzip");//gzip
 
             connection.setConnectTimeout(ONE_MINUTE);
             connection.setReadTimeout(ONE_MINUTE);
@@ -156,10 +158,12 @@ public class UtilNetworking {
         }
     }
 
-    static HttpsURLConnection createPOSTHttpsURLConnection(String urlString,Object postBody,
+    static HttpsURLConnection createPOSTHttpsURLConnection(String urlString, Object postBody,
                                                            IConnectionOptions connectionOptions)
             throws IOException {
         DataOutputStream wr = null;
+        GZIPOutputStream wr2 = null;
+        ByteArrayOutputStream arrayOutputStream;
         HttpsURLConnection connection = null;
 
         try {
@@ -182,13 +186,12 @@ public class UtilNetworking {
             }
             if (postBody instanceof String) {
                 if (postBody != null && ((String) postBody).length() > 0) {
-                    wr = new DataOutputStream(connection.getOutputStream());
-                    wr.writeBytes((String) postBody);
+                    wr2 =  new GZIPOutputStream(connection.getOutputStream());
+                    String bodys = (String) postBody;
+                    byte[] utf8bd = bodys.getBytes(ENCODING);
+                    wr2.write(utf8bd);
                 }
             }
-
-
-
             return connection;
         } catch (Exception e) {
             throw e;
@@ -197,6 +200,10 @@ public class UtilNetworking {
                 if (wr != null) {
                     wr.flush();
                     wr.close();
+                }
+                if (wr2 != null) {
+                    wr2.flush();
+                    wr2.close();
                 }
             } catch (Exception e) {
             }
@@ -219,7 +226,10 @@ public class UtilNetworking {
             } else {
                 inputStream = connection.getInputStream();
             }
-
+//            String encoding = connection.getContentEncoding();
+//            if (encoding != null && encoding.contains("gzip")) {
+//                inputStream = new GZIPInputStream(inputStream);
+//            }
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -272,14 +282,14 @@ public class UtilNetworking {
 
 
     static void error(String s, String msg) {
-        Log.e(s, msg+"");
+        Log.e(s, msg + "");
     }
 
     static void debug(String s, String msg) {
-        Log.d(s, msg+"");
+        Log.d(s, msg + "");
     }
 
     static void debug(String msg) {
-        Log.d("AAA>>>>", msg+"");
+        Log.d("AAA>>>>", msg + "");
     }
 }

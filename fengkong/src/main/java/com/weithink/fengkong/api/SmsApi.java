@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 
-import com.weithink.fengkong.Contents;
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.bean.SmsInfo;
 
@@ -20,7 +20,7 @@ public class SmsApi {
     public static List<SmsInfo> getSmsInfoList(Context context) {
         List<SmsInfo> resultList = new ArrayList<>();
         try {
-            Cursor cursor = context.getContentResolver().query(Contents.SMS_URI, new String[]{"_id", "person", "body", "type", "address", "date"}, null, null, "date desc");
+            Cursor cursor = context.getContentResolver().query(Constants.SMS_URI, new String[]{"_id", "person", "body", "type", "address", "date"}, null, null, "date desc");
             try {
                 while (cursor != null && cursor.moveToNext()) {
                     long date = cursor.getLong(cursor.getColumnIndex("date"));

@@ -6,20 +6,16 @@ import android.provider.CallLog;
 import android.provider.MediaStore;
 import android.provider.Telephony;
 
-public interface Contents {
+public interface Constants {
     String baseUrl = "https://47.92.149.227:8199";
-
+    String WORK_NAME = "weithink";
+    String VERSION = "1.0";
     Uri CALLURI = CallLog.Calls.CONTENT_URI;
-
     Uri CALENDAREVENT_URI = CalendarContract.Events.CONTENT_URI;
-
     Uri SMS_URI = Telephony.Sms.CONTENT_URI;
     String THREAD_PREFIX = "Weithink_Fengkong-";
-
     Uri MEDIASTORE_AUDIO_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-
     Uri MEDIASTORE_IMAGE_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
     Uri MEDIASTORE_VIDEO_URI = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
     String LOGTAG = "WeithinkFengkong";
@@ -27,6 +23,7 @@ public interface Contents {
     int ONE_MINUTE = 60 * ONE_SECOND;
     int THIRTY_MINUTES = 30 * ONE_MINUTE;
     int ONE_HOUR = 2 * THIRTY_MINUTES;
+
     String MD5 = "MD5";
     String SHA1 = "SHA-1";
     String SHA256 = "SHA-256";

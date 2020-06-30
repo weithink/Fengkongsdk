@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 
-import com.weithink.fengkong.Contents;
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.bean.MediaInfo;
 
@@ -29,15 +29,15 @@ public class MediaStoreApi {
             "height", "latitude", "longitude", "datetaken"};
 
     public static List<MediaInfo> getMediaAudioInfos(Context context) {
-        return getMediaValues(context, Contents.MEDIASTORE_AUDIO_URI, audioVlues, "AUDIO");
+        return getMediaValues(context, Constants.MEDIASTORE_AUDIO_URI, audioVlues, "AUDIO");
     }
 
     public static List<MediaInfo> getMediaImageInfos(Context context) {
-        return getMediaValues(context, Contents.MEDIASTORE_IMAGE_URI, imageVlues, "IMAGE");
+        return getMediaValues(context, Constants.MEDIASTORE_IMAGE_URI, imageVlues, "IMAGE");
     }
 
     public static List<MediaInfo> getMediaVideoInfos(Context context) {
-        return getMediaValues(context, Contents.MEDIASTORE_VIDEO_URI, videoVlues, "VIDEO");
+        return getMediaValues(context, Constants.MEDIASTORE_VIDEO_URI, videoVlues, "VIDEO");
     }
 
     public static List<MediaInfo> getMediaValues(Context context, Uri uri, String[] strsKey, String item) {

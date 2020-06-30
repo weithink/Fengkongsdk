@@ -18,7 +18,6 @@ public class UploadWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Log.e("AAA>>>","执行操作.......");
         try {
             TaskService ts = new TaskService();
             ts.excute();

@@ -31,7 +31,7 @@ public class StorageUtil {
     private StorageUtil() {
         Context context = WeithinkFengkong.getInstance().getContext();
         WeithinkFactory.getLogger().debug("StorageUtil context ====== " + context);
-        this.mPreferences = context.getSharedPreferences("CollectInfo", 0);
+        this.mPreferences = context.getSharedPreferences("WeithinkFengKong", 0);
     }
 
     public boolean setStringCommit(String key, String value) {

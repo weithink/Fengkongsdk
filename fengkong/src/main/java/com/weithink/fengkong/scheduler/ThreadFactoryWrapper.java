@@ -3,7 +3,7 @@ package com.weithink.fengkong.scheduler;
 import android.os.Process;
 
 
-import com.weithink.fengkong.Contents;
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
 
 import java.util.concurrent.Executors;
@@ -21,7 +21,7 @@ public class ThreadFactoryWrapper implements ThreadFactory {
         Thread thread = Executors.defaultThreadFactory().newThread(runnable);
 
         thread.setPriority(Process.THREAD_PRIORITY_BACKGROUND + Process.THREAD_PRIORITY_MORE_FAVORABLE);
-        thread.setName(Contents.THREAD_PREFIX + thread.getName() + "-" + source);
+        thread.setName(Constants.THREAD_PREFIX + thread.getName() + "-" + source);
         thread.setDaemon(true);
 
         thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {

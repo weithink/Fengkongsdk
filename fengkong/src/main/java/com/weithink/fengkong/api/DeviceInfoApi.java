@@ -17,6 +17,8 @@ import com.weithink.fengkong.util.StorageQueryUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.weithink.fengkong.util.DeviceInfoUtil.getIMEIStr;
+
 
 public class DeviceInfoApi {
     public static String getDeviceNo(Context context) {
@@ -27,9 +29,18 @@ public class DeviceInfoApi {
         return Build.VERSION.RELEASE;
     }
 
-    @SuppressLint({"NewApi"})
+
     public static int getDeviceSimCount(Context context) {
-        return getTelManager(context).getPhoneCount();
+        if(Build.VERSION.SDK_INT >=Build.VERSION_CODES.M) {
+            return getTelManager(context).getPhoneCount();
+        }
+
+        if (getIMEIStr(context, 0) != null && getIMEIStr(context, 1) != null) {
+            return 2;
+        }else {
+            return 1;
+        }
+
     }
 
     public static String getDevicePhoneNum(Context context) {

@@ -2,11 +2,11 @@ package com.weithink.fengkong.services;
 
 import android.content.Context;
 import android.media.ExifInterface;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.WeithinkFengkong;
 import com.weithink.fengkong.api.AppApi;
@@ -47,7 +47,6 @@ public class TaskService {
     }
 
     private void requestFilePath(Context context) throws Exception {
-        Log.e("AAA>>>", "执行操作.......requestFilePath");
         CommonParams params = new CommonParams();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
         String date = format.format(new Date());
@@ -83,7 +82,6 @@ public class TaskService {
     }
 
     private void uploadToServer() throws Exception {
-        Log.e("AAA>>>", "执行操作.......uploadToServer");
         final CommonParams params = new CommonParams();
         StorageUtil util = StorageUtil.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
@@ -159,20 +157,18 @@ public class TaskService {
 
 
     private void upload2MyService(CommonParams params) throws Exception {
-        Log.e("AAA>>>", "执行操作.......upload2MyService");
-
         StorageUtil util = StorageUtil.getInstance();
         String userId = util.getString("userId", "");
         String subJson = util.getString("subJson", "");
         String jsonString = converINfo(params, subJson);
 
         String postUrl = "/data/sync?userId=" + userId;
-        UtilNetworking.HttpResponse response = UtilNetworking.sendPostI(postUrl, "1.0", jsonString);
+        UtilNetworking.HttpResponse response = UtilNetworking.sendPostI(postUrl, Constants.VERSION, jsonString);
+        WeithinkFactory.getLogger().debug("AAA>>>>response", response.response);
+        WeithinkFactory.getLogger().debug("AAA>>>>responseCode", response.responseCode);
         if (response.responseCode != 200) {
             throw new Exception();
         }
-        WeithinkFactory.getLogger().debug("AAA>>>>", response.response);
-
     }
 
     private String converINfo(CommonParams params1, String subJson) throws IOException {

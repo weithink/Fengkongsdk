@@ -8,20 +8,17 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.LocaleList;
 import android.os.Looper;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 
-import com.weithink.fengkong.Contents;
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.OnDeviceIdsRead;
 import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.logger.ILogger;
-import com.weithink.fengkong.logger.Logger;
 import com.weithink.fengkong.scheduler.SingleThreadFutureScheduler;
 
 import java.io.BufferedInputStream;
@@ -53,9 +50,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.weithink.fengkong.Contents.MD5;
-import static com.weithink.fengkong.Contents.SHA1;
-import static com.weithink.fengkong.Contents.SHA256;
+import static com.weithink.fengkong.Constants.MD5;
+import static com.weithink.fengkong.Constants.SHA1;
+import static com.weithink.fengkong.Constants.SHA256;
 import static javax.xml.transform.OutputKeys.ENCODING;
 
 public class Util {
@@ -206,7 +203,7 @@ public class Util {
         try {
             GooglePlayServicesClient.GooglePlayServicesInfo gpsInfo =
                     GooglePlayServicesClient.getGooglePlayServicesInfo(context,
-                            Contents.ONE_SECOND * 11);
+                            Constants.ONE_SECOND * 11);
             if (gpsInfo != null) {
                 googleAdId = gpsInfo.getGpsAdid();
             }
@@ -214,10 +211,10 @@ public class Util {
         }
         if (googleAdId == null) {
             Object advertisingInfoObject = Util.getAdvertisingInfoObject(
-                    context, Contents.ONE_SECOND * 11);
+                    context, Constants.ONE_SECOND * 11);
 
             if (advertisingInfoObject != null) {
-                googleAdId = Util.getPlayAdId(context, advertisingInfoObject, Contents.ONE_SECOND);
+                googleAdId = Util.getPlayAdId(context, advertisingInfoObject, Constants.ONE_SECOND);
             }
         }
 

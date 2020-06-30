@@ -18,8 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        WeithinkFengkong.getInstance().syncData("aaa","1.0","abc","aaa"
-        ,"12345678901","http://baidu.com",new ArrayList<LocationInfo>(),"asea",
-                "123","seae");
+        WeithinkFengkong.getInstance().syncData("aaa.aa.aaa","1.0","012345","12345678901"
+                ,new ArrayList<LocationInfo>(),"aaa","321","asea");
     }
 }
