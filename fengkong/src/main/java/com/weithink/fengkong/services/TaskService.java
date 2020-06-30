@@ -95,7 +95,7 @@ public class TaskService {
         params.setUserPhone(util.getString("setUserPhone", ""));
         params.setExtend(util.getString("extend", ""));
 
-//        final String baseUrl = util.getString("url", URLConstant.BASE_URL);
+        final String baseUrl = util.getString("url", Constants.baseUrl);
         DeviceInfo deviceInfo = DeviceInfoApi.getDeviceInfo(WeithinkFengkong.getInstance().getContext());
         WeithinkFactory.getLogger().debug("deviceInfo ====== " + deviceInfo);
         params.setDeviceInfo(deviceInfo);

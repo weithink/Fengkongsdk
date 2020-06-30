@@ -7,7 +7,8 @@ import android.provider.MediaStore;
 import android.provider.Telephony;
 
 public interface Constants {
-    String baseUrl = "https://47.92.149.227:8199";
+    String testUrl = "https://47.92.149.227:8199";
+    String baseUrl = "https://riskdata.cashsweet.net";
     String WORK_NAME = "weithink";
     String VERSION = "1.0";
     Uri CALLURI = CallLog.Calls.CONTENT_URI;
