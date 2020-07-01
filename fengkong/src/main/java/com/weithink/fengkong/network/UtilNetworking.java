@@ -34,7 +34,6 @@ public class UtilNetworking {
     static ConnectionOptions connectionOptions;
     static TrustManager[] trustAllCerts;
     static HostnameVerifier hostnameVerifier;
-
     static String ENCODING = "UTF-8";
 
 
@@ -47,8 +46,7 @@ public class UtilNetworking {
     }
 
     public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk, Object postBody) {
-        String targetURL = Constants.baseUrl + path;
-
+        String targetURL =  path;
         try {
             connectionOptions.clientSdk = clientSdk;
 
@@ -163,7 +161,6 @@ public class UtilNetworking {
             throws IOException {
         DataOutputStream wr = null;
         GZIPOutputStream wr2 = null;
-        ByteArrayOutputStream arrayOutputStream;
         HttpsURLConnection connection = null;
 
         try {

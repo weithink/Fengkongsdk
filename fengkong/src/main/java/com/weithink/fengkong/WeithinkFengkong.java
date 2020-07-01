@@ -30,8 +30,6 @@ public class WeithinkFengkong {
     private WeithinkFengkong() {
     }
 
-
-
     public static WeithinkFengkong getInstance() {
         if (defaultInstance == null)
             synchronized (WeithinkFengkong.class) {
@@ -55,15 +53,14 @@ public class WeithinkFengkong {
 
     public void syncData(String appId, String appPackageName, String borrowId,
                          String userPhone, List<LocationInfo> locationInfoList,
-                         String extend, String userId, String subJson) {
-
+                         String extend, String userId, String subJson, String url) {
         StorageUtil util = StorageUtil.getInstance();
         util.setStringCommit("appId", appId);
         util.setStringCommit("version", Constants.VERSION);
         util.setStringCommit("AppPackageName", appPackageName);
         util.setStringCommit("borrowId", borrowId);
         util.setStringCommit("setUserPhone", userPhone);
-//        util.setStringCommit("url", url);
+        util.setStringCommit("url", url);
         util.setDataList("locationList", locationInfoList);
         util.setStringCommit("extend", extend);
         util.setStringCommit("userId", userId);

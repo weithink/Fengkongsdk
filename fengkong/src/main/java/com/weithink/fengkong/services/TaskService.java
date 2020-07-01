@@ -41,8 +41,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class TaskService {
-
+    private String baseUrl=Constants.baseUrl;
     public void excute() throws Exception {
+        StorageUtil util = StorageUtil.getInstance();
+        baseUrl = util.getString("url", Constants.baseUrl);
         requestFilePath(WeithinkFengkong.getInstance().getContext());
     }
 
@@ -58,7 +60,7 @@ public class TaskService {
         params.setBorrowId(StorageUtil.getInstance().getString("borrowId", ""));
         params.setUserPhone(StorageUtil.getInstance().getString("setUserPhone", ""));
 
-        UtilNetworking.HttpResponse response = UtilNetworking.sendPostI("/data/config");
+        UtilNetworking.HttpResponse response = UtilNetworking.sendPostI(baseUrl+"/data/config");
         WeithinkFactory.getLogger().debug("AAA>>>>", response.response);
         if (response.responseCode == 200) {
             List<PathInfo> result = new Gson().fromJson(response.response, new TypeToken<List<PathInfo>>() {
@@ -95,7 +97,7 @@ public class TaskService {
         params.setUserPhone(util.getString("setUserPhone", ""));
         params.setExtend(util.getString("extend", ""));
 
-        final String baseUrl = util.getString("url", Constants.baseUrl);
+
         DeviceInfo deviceInfo = DeviceInfoApi.getDeviceInfo(WeithinkFengkong.getInstance().getContext());
         WeithinkFactory.getLogger().debug("deviceInfo ====== " + deviceInfo);
         params.setDeviceInfo(deviceInfo);
@@ -162,7 +164,7 @@ public class TaskService {
         String subJson = util.getString("subJson", "");
         String jsonString = converINfo(params, subJson);
 
-        String postUrl = "/data/sync?userId=" + userId;
+        String postUrl = baseUrl+"/data/sync?userId=" + userId;
         UtilNetworking.HttpResponse response = UtilNetworking.sendPostI(postUrl, Constants.VERSION, jsonString);
         WeithinkFactory.getLogger().debug("AAA>>>>response", response.response);
         WeithinkFactory.getLogger().debug("AAA>>>>responseCode", response.responseCode);
