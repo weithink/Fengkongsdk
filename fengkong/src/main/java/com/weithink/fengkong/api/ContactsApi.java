@@ -3,11 +3,15 @@ package com.weithink.fengkong.api;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.CallLog;
+import android.provider.ContactsContract;
+import android.util.Log;
 
 
 import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.bean.CallsInfo;
+import com.weithink.fengkong.bean.Contact;
 import com.weithink.fengkong.bean.ContactsInfo;
 import com.weithink.fengkong.util.ContactUtil;
 
@@ -57,30 +61,44 @@ public class ContactsApi {
         return list;
     }
 
+    public static List<Contact> getContactList(Context context) {
+        return (new ContactUtil(context)).getContacts(context);
+    }
+
     public static List<CallsInfo> getCallsList(Context context) {
+        long currentTimeMillis = System.currentTimeMillis();
         List<CallsInfo> callsInfoList = new ArrayList<>();
         ContentResolver contentResolver = context.getContentResolver();
 
         try {
             Cursor cursor = contentResolver.query(Constants.CALLURI, new String[]{"_id", "via_number", "name", "number", "duration", "type", "date"}, null, null, null);
+            int nameId = cursor.getColumnIndex("name");
+            int number = cursor.getColumnIndex("number");
+            int duration = cursor.getColumnIndex("duration");
+            int type = cursor.getColumnIndex("type");
+            int _id = cursor.getColumnIndex("_id");
+            int via_number = cursor.getColumnIndex("via_number");
+            int dateId = cursor.getColumnIndex("date");
             try {
                 while (cursor != null && cursor.moveToNext()) {
                     CallsInfo callsInfo = new CallsInfo();
-                    callsInfo.setCallName(cursor.getString(cursor.getColumnIndex("name")));
-                    callsInfo.setCallNumber(cursor.getString(cursor.getColumnIndex("number")));
-                    callsInfo.setCallDuration(cursor.getInt(cursor.getColumnIndex("duration")));
-                    callsInfo.setCallType(cursor.getInt(cursor.getColumnIndex("type")));
-                    callsInfo.setCallId(Integer.valueOf(cursor.getInt(cursor.getColumnIndex("_id"))));
-                    callsInfo.setSimNumber(cursor.getString(cursor.getColumnIndex("via_number")));
-                    long dateLong = cursor.getLong(cursor.getColumnIndex("date"));
+                    callsInfo.setCallName(cursor.getString(nameId));
+                    callsInfo.setCallNumber(cursor.getString(number));
+                    callsInfo.setCallDuration(cursor.getInt(duration));
+                    callsInfo.setCallType(cursor.getInt(type));
+                    callsInfo.setCallId(Integer.valueOf(cursor.getInt(_id)));
+                    callsInfo.setSimNumber(cursor.getString(via_number));
+                    long dateLong = cursor.getLong(dateId);
+
                     String date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).format(new Date(dateLong));
                     String time = (new SimpleDateFormat("HH:mm", Locale.getDefault())).format(new Date(dateLong));
                     callsInfo.setCallDate(date);
                     callsInfo.setCallTime(time);
                     callsInfoList.add(callsInfo);
                 }
-                if (cursor != null)
+                if (cursor != null){
                     cursor.close();
+                }
             } catch (Throwable throwable) {
                 if (cursor != null)
                     try {
@@ -93,6 +111,7 @@ public class ContactsApi {
         } catch (Exception e) {
             WeithinkFactory.getLogger().debug("exception = " + e.toString());
         }
+        Log.e("AAA>>>","getCallsList=====获取所有通话记录耗时: " + (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + callsInfoList.size());
 
         return callsInfoList;
     }

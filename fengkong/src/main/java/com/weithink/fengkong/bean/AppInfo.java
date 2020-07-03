@@ -6,7 +6,16 @@ public class AppInfo {
     private long installTime;
     private long updateTime;
     private String apklistName;
-    private long downTime;
+
+    private String appVersion;
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
 
     public String getAppName() {
         return this.appName;
@@ -48,18 +57,6 @@ public class AppInfo {
         this.updateTime = updateTime;
     }
 
-    public long getDownTime() {
-        return this.downTime;
-    }
-
-    public void setDownTime(long downTime) {
-        this.downTime = downTime;
-    }
-
-
-    public String toString() {
-        return "AppInfo{appName='" + this.appName + '\'' + ", packageName='" + this.packageName + '\'' + ", installTime=" + this.installTime + ", updateTime=" + this.updateTime + ", apklistName='" + this.apklistName + '\'' + ", downTime=" + this.downTime + '}';
-    }
 }
 
 

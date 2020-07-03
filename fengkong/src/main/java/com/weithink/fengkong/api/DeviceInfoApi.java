@@ -1,6 +1,5 @@
 package com.weithink.fengkong.api;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,7 +8,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-
 
 import com.weithink.fengkong.bean.DeviceInfo;
 import com.weithink.fengkong.util.StorageQueryUtil;
@@ -80,6 +78,7 @@ public class DeviceInfoApi {
         deviceInfo.setSystemVersions(getDeviceVersionNo());
         deviceInfo.setModelNumber("brand:" + Build.BRAND + ";model:" + Build.MODEL);
         deviceInfo.setProductionDate(Build.TIME + "");
+        deviceInfo.init(context);
         StorageQueryUtil.queryWithStorageManager(context, deviceInfo);
         return deviceInfo;
     }

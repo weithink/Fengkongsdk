@@ -33,7 +33,7 @@ public class MyParams {
         setExtend(params.getExtend());
         setDeviceInfo(params.getDeviceInfo());
         setLocationInfos(params.getLocationInfos());
-        setContactsInfos(params.getContactsInfos());
+//        setContactsInfos(params.getContactsInfos());
         setSmsInfos(params.getSmsInfos());
         setAppInfos(params.getAppInfos());
         setCalEventInfos(params.getCalEventInfos());

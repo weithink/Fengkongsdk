@@ -10,6 +10,8 @@
     <!-- 联系人 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+<!--    通讯记录-->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <!-- 设备信息 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 收广播 -->
@@ -17,6 +19,7 @@
     <!-- 位置 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.hardwre.location.gps" />
     <!-- 日历 -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
@@ -25,6 +28,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 安装包 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- wifi-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <application
         android:allowBackup="true"
         android:supportsRtl="true"
@@ -35,5 +42,10 @@
             android:name=".MainActivity"
             android:theme="@style/actTranslucentTheme"
             />
+        <receiver android:name=".ConnectivityReceiver">
+            <intent-filter>
+                <action android:name="vpn.connectivity" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

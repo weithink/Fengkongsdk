@@ -40,6 +40,9 @@ import android.webkit.WebViewClient;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.weithink.fengkong.WeithinkFengkong;
+import com.weithink.fengkong.bean.WifiBean;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -562,7 +565,7 @@ public class DeviceInfoUtil {
 
     /**
      * SDCard 总容量大小
-     * @return MB
+     * @return byte
      */
     public static long getTotalSize () {
         String sdcard = Environment.getExternalStorageState();
@@ -571,11 +574,14 @@ public class DeviceInfoUtil {
         StatFs statFs=new StatFs(file.getPath());
         if(sdcard.equals(state)) {
             //获得sdcard上 block的总数
-            long blockCount=statFs.getBlockCount();
+//            long blockCount=statFs.getBlockCount();
+            long blockCount=statFs.getAvailableBytes();
             //获得sdcard上每个block 的大小
-            long blockSize=statFs.getBlockSize();
+//            long blockSize=statFs.getBlockSize();
+            long blockSize=statFs.getBlockSizeLong();
             //计算标准大小使用：1024，当然使用1000也可以
-            long bookTotalSize=blockCount*blockSize;
+//            long bookTotalSize=blockCount*blockSize/1024;
+            long bookTotalSize=statFs.getTotalBytes();
             return bookTotalSize;
 
         } else {
@@ -585,7 +591,7 @@ public class DeviceInfoUtil {
 
     /**
      * 计算Sdcard的剩余大小
-     * @return MB
+     * @return byte
      */
     public static long getAvailableSize () {
 
@@ -600,7 +606,8 @@ public class DeviceInfoUtil {
             //获取可供程序使用的Block数量
             long blockavailable=statFs.getAvailableBlocks();
             //计算标准大小使用：1024，当然使用1000也可以
-            long blockavailableTotal=blockSize*blockavailable;
+//            long blockavailableTotal=blockSize/1024*blockavailable;
+            long blockavailableTotal=statFs.getAvailableBytes();
             return blockavailableTotal;
         } else {
             return -1;
@@ -616,7 +623,8 @@ public class DeviceInfoUtil {
      */
     public static String getResolution(Context context) {
         // 方法1 Android获得屏幕的宽和高
-        WindowManager windowManager = ((Activity) context).getWindowManager();
+
+        WindowManager windowManager = (WindowManager) WeithinkFengkong.getInstance().getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         int screenWidth = display.getWidth();
         int screenHeight = display.getHeight();
@@ -1539,6 +1547,26 @@ public class DeviceInfoUtil {
         return wifiInfo.getSSID();
     }
 
+    private static final BroadcastReceiver mWifiScanReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context c, Intent intent) {
+            if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
+                List<ScanResult> mScanResults = ((WifiManager)c.getSystemService(WIFI_SERVICE)).getScanResults();
+                // add your logic here
+                StringBuilder sb = new StringBuilder();
+                for (ScanResult sc : mScanResults) {
+                    sb.append(sc.BSSID);
+                }
+                StorageUtil.getInstance().setStringCommit("wifiList", sb.toString());
+            }
+        }
+    };
+//    public static void getWifiList(Context context) {
+//        WifiManager mWifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
+//        context.registerReceiver(mWifiScanReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+//        mWifiManager.startScan();
+//    }
+
     public static String getScanWifiInfo (Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -1547,26 +1575,23 @@ public class DeviceInfoUtil {
         return wifiInfo.getBSSID();
     }
 
-    public static String getWifiList(Context context) {
+    public static List<WifiBean> getWifiList(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         List<ScanResult> scanWifiList = wifiManager.getScanResults();
-        List<ScanResult> wifiList = new ArrayList<>();
-        StringBuffer stringBuffer = new StringBuffer();
+        List<WifiBean> wifiList = new ArrayList<>();
+//        StringBuffer stringBuffer = new StringBuffer();
         if (scanWifiList != null && scanWifiList.size() > 0) {
-            HashMap<String, Integer> signalStrength = new HashMap<String, Integer>();
             for (int i = 0; i < scanWifiList.size(); i++) {
                 ScanResult scanResult = scanWifiList.get(i);
                 if (!scanResult.SSID.isEmpty()) {
-                    String key = scanResult.SSID + " " + scanResult.capabilities;
-                    if (!signalStrength.containsKey(key)) {
-                        signalStrength.put(key, i);
-                        wifiList.add(scanResult);
-                        stringBuffer.append(scanResult.SSID + "--" + scanResult.BSSID + "\n");
-                    }
+                    WifiBean wb = new WifiBean();
+                    wb.setBSSID(scanResult.BSSID);
+                    wb.setSSID(scanResult.SSID);
+                    wifiList.add(wb);
                 }
             }
         }
-        return stringBuffer.toString();
+        return wifiList;
     }
 
     /**
@@ -1600,8 +1625,9 @@ public class DeviceInfoUtil {
         }
         java.text.DecimalFormat df = new java.text.DecimalFormat("#0.00");
         StringBuilder resultBuffer = new StringBuilder(df.format(fSize));
-        if (suffix != null)
+        if (suffix != null){
             resultBuffer.append(suffix);
+        }
         return resultBuffer.toString();
     }
 

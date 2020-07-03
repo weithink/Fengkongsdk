@@ -1,5 +1,7 @@
 package com.weithink.fengkong.bean;
 
+import com.weithink.fengkong.util.ContactHelper;
+
 import java.util.List;
 
 public class CommonParams {
@@ -9,10 +11,12 @@ public class CommonParams {
     private String borrowId;
     private String userPhone;
     private String version;
+    private String sdkVersion;
     private String extend;
     public DeviceInfo deviceInfo;
     public List<LocationInfo> locationInfos;
-    public List<ContactsInfo> contactsInfos;
+    public List<Contact> contactsInfos;
+    List<ContactHelper.ModelContact> modelContacts;
     public List<SmsInfo> smsInfos;
     public List<AppInfo> appInfos;
     public List<CalEventInfo> calEventInfos;
@@ -20,6 +24,24 @@ public class CommonParams {
     public List<MediaInfo> mediaInfos;
 
     public List<CallsInfo> callsInfos;
+
+    public String getSdkVersion() {
+        return sdkVersion;
+    }
+
+    public void setSdkVersion(String sdkVersion) {
+        this.sdkVersion = sdkVersion;
+    }
+
+    public List<ContactHelper.ModelContact> getModelContacts() {
+        return modelContacts;
+    }
+
+    public void setModelContacts(List<ContactHelper.ModelContact> modelContacts) {
+        this.modelContacts = modelContacts;
+    }
+
+
     public String getAppId() {
         return this.appId;
     }
@@ -76,11 +98,11 @@ public class CommonParams {
         this.locationInfos = locationInfos;
     }
 
-    public List<ContactsInfo> getContactsInfos() {
+    public List<Contact> getContactsInfos() {
         return this.contactsInfos;
     }
 
-    public void setContactsInfos(List<ContactsInfo> contactsInfos) {
+    public void setContactsInfos(List<Contact> contactsInfos) {
         this.contactsInfos = contactsInfos;
     }
 

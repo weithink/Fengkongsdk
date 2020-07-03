@@ -3,6 +3,7 @@ package com.weithink.fengkong;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -14,7 +15,11 @@ import java.util.List;
 public class MainActivity extends Activity {
     private final int permissionRequestCode = 100;
     private List<String> mPermissionList = new ArrayList<>();
-    private String[] permissions = new String[]{"android.permission.READ_SMS", "android.permission.READ_CONTACTS", "android.permission.READ_CALENDAR", "android.permission.WRITE_CALENDAR", "android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    private String[] permissions = new String[]{"android.permission.READ_SMS", "android.permission.READ_CONTACTS",
+            "android.permission.READ_CALENDAR", "android.permission.WRITE_CALENDAR",
+            "android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.READ_PHONE_STATE", "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_CALL_LOG"};
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,6 +54,7 @@ public class MainActivity extends Activity {
 
 
     private void startService() {
+        Log.e("AAA>>>>", "startService");
 //        startService(new Intent((Context) this, CollectService.class));
         WeithinkFengkong.getInstance().execute();
         finish();

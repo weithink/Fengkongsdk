@@ -2,6 +2,7 @@ package com.weithink.fengkong.api;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.media.ExifInterface;
 import android.net.Uri;
 
 
@@ -79,6 +80,10 @@ public class MediaStoreApi {
                         mediaInfo.setMediaHeight(cursor.getString(cursor.getColumnIndex("height")));
                         mediaInfo.setMediaFileName(cursor.getString(cursor.getColumnIndex("_display_name")));
                         mediaInfo.setMediaaddTime(cursor.getString(cursor.getColumnIndex("date_added")));
+                        //图片中设备信息
+                        ExifInterface exif = new ExifInterface(mediaInfo.getMediaPath());
+                        mediaInfo.setMediaDeviceName(exif.getAttribute(ExifInterface.TAG_MAKE));//制造商
+                        mediaInfo.setMediaDeviceCode(exif.getAttribute(ExifInterface.TAG_MODEL));//型号
                     } else if (item.equals("AUDIO")) {
                         mediaInfo.setMediaId(cursor.getString(cursor.getColumnIndex("_id")));
                         mediaInfo.setMediaTilte(cursor.getString(cursor.getColumnIndex("title")));

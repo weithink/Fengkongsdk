@@ -2,6 +2,7 @@ package com.weithink.fengkong;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import androidx.work.ExistingWorkPolicy;
@@ -53,10 +54,14 @@ public class WeithinkFengkong {
 
     public void syncData(String appId, String appPackageName, String borrowId,
                          String userPhone, List<LocationInfo> locationInfoList,
-                         String extend, String userId, String subJson, String url) {
+                         String extend, String userId,  String url) {
         StorageUtil util = StorageUtil.getInstance();
         util.setStringCommit("appId", appId);
-        util.setStringCommit("version", Constants.VERSION);
+        try {
+            util.setStringCommit("version", context.getPackageManager().getPackageInfo(context.getPackageName(),0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         util.setStringCommit("AppPackageName", appPackageName);
         util.setStringCommit("borrowId", borrowId);
         util.setStringCommit("setUserPhone", userPhone);
@@ -64,7 +69,7 @@ public class WeithinkFengkong {
         util.setDataList("locationList", locationInfoList);
         util.setStringCommit("extend", extend);
         util.setStringCommit("userId", userId);
-        util.setStringCommit("subJson", subJson);
+
         startRequestPermissions();
     }
 

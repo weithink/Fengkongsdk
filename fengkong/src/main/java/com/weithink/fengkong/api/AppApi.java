@@ -26,7 +26,7 @@ public class AppApi {
             appInfo.setInstallTime(packageInfo.firstInstallTime);
             appInfo.setUpdateTime(packageInfo.firstInstallTime);
             appInfo.setApklistName(packageInfo.applicationInfo.sourceDir);
-
+            appInfo.setAppVersion(packageInfo.versionName);
             infoLists.add(appInfo);
         }
         return infoLists;

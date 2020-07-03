@@ -15,6 +15,24 @@ public class MediaInfo {
     private String mediaDuration;
     private String mediaWidth;
     private String mediaHeight;
+    private String mediaDeviceName;//设备名称
+    private String mediaDeviceCode;//设备型号
+
+    public String getMediaDeviceName() {
+        return mediaDeviceName;
+    }
+
+    public void setMediaDeviceName(String mediaDeviceName) {
+        this.mediaDeviceName = mediaDeviceName;
+    }
+
+    public String getMediaDeviceCode() {
+        return mediaDeviceCode;
+    }
+
+    public void setMediaDeviceCode(String mediaDeviceCode) {
+        this.mediaDeviceCode = mediaDeviceCode;
+    }
 
     public String getMediaId() {
         return this.mediaId;
