@@ -26,7 +26,7 @@
       "updateTime": 1585710000369
     },
     {
-      "apklistName": "/data/app/com.cashsweet.www-pb_qYnbP4a4sPP5E4VQscA\u003d\u003d/base.apk",
+      "apklistName": "/data/app/com.cashsweet.www-pvuKOlYPs5IUtfLzrn5TNw\u003d\u003d/base.apk",
       "appName": "CashSweetPro",
       "appVersion": "test1.0.1",
       "installTime": 1592560638791,
@@ -34,7 +34,7 @@
       "updateTime": 1592560638791
     },
     {
-      "apklistName": "/data/app/com.loan.fengkongsdk-5qivIjJ-zAvzKxYEN6mWeA\u003d\u003d/base.apk",
+      "apklistName": "/data/app/com.loan.fengkongsdk-n8aVTs0uCr_ASC9Voyu5dw\u003d\u003d/base.apk",
       "appName": "Fengkong sdk",
       "appVersion": "1.0",
       "installTime": 1593503141146,
@@ -3856,9 +3856,9 @@
     "android_version": "8.1.0",
     "api_lever": "27",
     "battery_power": "100",
-    "battery_temperature": "300",
+    "battery_temperature": "297",
     "bluetooth_address": "",
-    "boot_time": "72:46:00",
+    "boot_time": "74:15:49",
     "brand": "Xiaomi",
     "cardNum": 2,
     "charging": "true",
@@ -3878,7 +3878,7 @@
     "ip_india_check": "",
     "kernel_version": "3.18.71-perf-g940b9cc",
     "language": "zh",
-    "mac_address": "",
+    "mac_address": "80:AD:16:79:2D:57",
     "mobile_network_ip": "",
     "mobile_network_status": "false",
     "mobile_no": "+8613799142924",
@@ -3888,13 +3888,13 @@
     "operator": "中国移动",
     "productionDate": "1564040428000",
     "ram_total": "1.78GB",
-    "ram_used": "664.47MB",
+    "ram_used": "587.81MB",
     "root_status": "false",
     "screen_resolution": "720*1344",
     "sdCard": false,
     "sdCardSize": "0.00",
     "sd_total": "9.46GB",
-    "sd_used": "1.35GB",
+    "sd_used": "1.36GB",
     "sim_iccid": "898600791307f9000257",
     "sim_imsi": "460009112907760",
     "systemSize": "16.00",
@@ -3911,32 +3911,56 @@
         "SSID": "杨文的路由器"
       },
       {
-        "BSSID": "50:98:b8:6e:1c:d0",
-        "SSID": "YWHZ_Express Guest"
-      },
-      {
         "BSSID": "50:64:2b:68:c5:af",
         "SSID": "JIKELIC_DEV"
-      },
-      {
-        "BSSID": "50:64:2b:0e:d2:24",
-        "SSID": "JIKELC"
       },
       {
         "BSSID": "80:49:71:13:40:91",
         "SSID": "GouLa的Mac mini"
       },
       {
+        "BSSID": "50:64:2b:0e:d2:24",
+        "SSID": "JIKELC"
+      },
+      {
+        "BSSID": "50:98:b8:6e:1c:d0",
+        "SSID": "YWHZ_Express Guest"
+      },
+      {
+        "BSSID": "d4:68:ba:00:4b:4e",
+        "SSID": "JZDS"
+      },
+      {
         "BSSID": "7c:b5:9b:44:27:99",
         "SSID": "KaiWang"
       },
       {
-        "BSSID": "d0:ef:c1:fb:08:20",
-        "SSID": "cmhb"
+        "BSSID": "88:40:3b:c1:61:cc",
+        "SSID": "杭州准点物流"
       },
       {
         "BSSID": "a4:56:02:f6:25:7d",
         "SSID": "Sample Room"
+      },
+      {
+        "BSSID": "d4:68:ba:00:4b:28",
+        "SSID": "JZDS"
+      },
+      {
+        "BSSID": "d4:68:ba:00:4b:3c",
+        "SSID": "JZDS"
+      },
+      {
+        "BSSID": "50:98:b8:6e:29:30",
+        "SSID": "YWHZ_Express Guest"
+      },
+      {
+        "BSSID": "88:c3:97:9a:02:51",
+        "SSID": "MYFIT"
+      },
+      {
+        "BSSID": "a2:32:4b:b0:94:f5",
+        "SSID": "DIRECT-JVDESKTOP-L6NER4ImsWS"
       }
     ],
     "xposed_status": "false"
@@ -30211,6 +30235,7 @@
       "rawContactId": "740"
     }
   ],
+  "sdkVersion": "1.2.1",
   "smsInfos": [
     {
       "content": "55425562533556556588555",
@@ -43133,7 +43158,7 @@
       "type": "1"
     }
   ],
-  "transactionId": "bb846ecb26262d70_20200703155305",
+  "transactionId": "bb846ecb26262d70_20200703172254",
   "userPhone": "12345678901",
   "version": "1.0"
 }

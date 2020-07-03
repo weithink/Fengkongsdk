@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.weithink.fengkong.util.DeviceInfoUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +57,7 @@ public class MainActivity extends Activity {
 
     private void startService() {
         Log.e("AAA>>>>", "startService");
+        DeviceInfoUtil.scanWifiList(WeithinkFengkong.getInstance().getContext());
 //        startService(new Intent((Context) this, CollectService.class));
         WeithinkFengkong.getInstance().execute();
         finish();

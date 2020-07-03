@@ -117,7 +117,7 @@ public class DeviceInfo {
         setSim_imsi(DeviceInfoUtil.getImsiCode(mContext));//sim卡IMSI号
         setSim_iccid(DeviceInfoUtil.getIccidCode(mContext));//iccid
         setOperator(DeviceInfoUtil.getOperatorName(mContext));//运营商
-
+        setMac_address(DeviceInfoUtil.macAddress());//mac 地址
         setNetwork_connection_type(DeviceInfoUtil.getNetWorkState(mContext));//网络连接类型
         setMobile_network_status(DeviceInfoUtil.getMobileDataState(mContext, null)+"");//移动网络状态
         setWifi_name(DeviceInfoUtil.getConnectWifiSsid(mContext));//WiFi名称
