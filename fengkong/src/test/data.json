@@ -1,5 +1,5 @@
 {
-  "appId": "aaa.aa.aaa",
+  "appId": "cashsweet",
   "appInfos": [
     {
       "apklistName": "/data/app/com.miui.screenrecorder-1/MiuiScreenRecorder.apk",
@@ -26,7 +26,7 @@
       "updateTime": 1585710000369
     },
     {
-      "apklistName": "/data/app/com.cashsweet.www-pvuKOlYPs5IUtfLzrn5TNw\u003d\u003d/base.apk",
+      "apklistName": "/data/app/com.cashsweet.www-HJVHAO87U6uyLYuwmOuolw\u003d\u003d/base.apk",
       "appName": "CashSweetPro",
       "appVersion": "test1.0.1",
       "installTime": 1592560638791,
@@ -410,8 +410,8 @@
       "updateTime": 1544159077000
     }
   ],
-  "appPackageName": "1.0",
-  "borrowId": "012345",
+  "appPackageName": "com.cashsweet.www",
+  "borrowId": "shenniu_v01",
   "calEventInfos": [
     {
       "address": "",
@@ -3858,14 +3858,14 @@
     "battery_power": "100",
     "battery_temperature": "297",
     "bluetooth_address": "",
-    "boot_time": "74:15:49",
+    "boot_time": "74:26:06",
     "brand": "Xiaomi",
     "cardNum": 2,
     "charging": "true",
     "cpu_architecture": "arm64-v8a",
     "cpu_info": " Qualcomm Technologies, Inc SDM450",
-    "deviceId": "bb846ecb26262d70",
-    "device_fingerprint": "87042EBA4514D7A57C320A350A6F77BE",
+    "deviceId": "df3caa4b9c6b3283",
+    "device_fingerprint": "9D065E600E403D2E311B90147A3BBC03",
     "emulator_status": "false",
     "extranet_ip": "",
     "iccid_india_check": "",
@@ -3888,7 +3888,7 @@
     "operator": "中国移动",
     "productionDate": "1564040428000",
     "ram_total": "1.78GB",
-    "ram_used": "587.81MB",
+    "ram_used": "658.05MB",
     "root_status": "false",
     "screen_resolution": "720*1344",
     "sdCard": false,
@@ -3911,61 +3911,33 @@
         "SSID": "杨文的路由器"
       },
       {
-        "BSSID": "50:64:2b:68:c5:af",
-        "SSID": "JIKELIC_DEV"
-      },
-      {
         "BSSID": "80:49:71:13:40:91",
         "SSID": "GouLa的Mac mini"
-      },
-      {
-        "BSSID": "50:64:2b:0e:d2:24",
-        "SSID": "JIKELC"
       },
       {
         "BSSID": "50:98:b8:6e:1c:d0",
         "SSID": "YWHZ_Express Guest"
       },
       {
-        "BSSID": "d4:68:ba:00:4b:4e",
-        "SSID": "JZDS"
+        "BSSID": "50:64:2b:68:c5:af",
+        "SSID": "JIKELIC_DEV"
+      },
+      {
+        "BSSID": "50:64:2b:0e:d2:24",
+        "SSID": "JIKELC"
       },
       {
         "BSSID": "7c:b5:9b:44:27:99",
         "SSID": "KaiWang"
       },
       {
-        "BSSID": "88:40:3b:c1:61:cc",
-        "SSID": "杭州准点物流"
-      },
-      {
-        "BSSID": "a4:56:02:f6:25:7d",
-        "SSID": "Sample Room"
-      },
-      {
         "BSSID": "d4:68:ba:00:4b:28",
         "SSID": "JZDS"
-      },
-      {
-        "BSSID": "d4:68:ba:00:4b:3c",
-        "SSID": "JZDS"
-      },
-      {
-        "BSSID": "50:98:b8:6e:29:30",
-        "SSID": "YWHZ_Express Guest"
-      },
-      {
-        "BSSID": "88:c3:97:9a:02:51",
-        "SSID": "MYFIT"
-      },
-      {
-        "BSSID": "a2:32:4b:b0:94:f5",
-        "SSID": "DIRECT-JVDESKTOP-L6NER4ImsWS"
       }
     ],
     "xposed_status": "false"
   },
-  "extend": "aaa",
+  "extend": "{\"address\":\"Maharashtra,Thane ghatkopar west mumbai\",\"emergencyContact\":[],\"sex\":\"MALE\",\"companyAddress\":\" \",\"name\":{\"firstName\":\"Ajay\",\"lastName\":\"Mane\",\"middleName\":\"Vivek\"},\"channel\":\"Organic\",\"company\":\"ajaya solutions\",\"email\":\"wr718@163.com\"}",
   "fileInfos": [
     {
       "absolutePath": "/storage/emulated/0/DCIM/.DCIM_ID",
@@ -4165,9 +4137,9 @@
   ],
   "locationInfos": [
     {
-      "accuracy": "No Location Information",
+      "accuracy": "",
       "latitude": "0.0",
-      "locationType": "-1",
+      "locationType": "01",
       "longitude": "0.0"
     }
   ],
@@ -30235,7 +30207,7 @@
       "rawContactId": "740"
     }
   ],
-  "sdkVersion": "1.2.1",
+  "sdkVersion": "1.2.3",
   "smsInfos": [
     {
       "content": "55425562533556556588555",
@@ -43158,7 +43130,7 @@
       "type": "1"
     }
   ],
-  "transactionId": "bb846ecb26262d70_20200703172254",
-  "userPhone": "12345678901",
-  "version": "1.0"
+  "transactionId": "df3caa4b9c6b3283_20200703173312",
+  "userPhone": "9867470330",
+  "version": "test1.0.1"
 }

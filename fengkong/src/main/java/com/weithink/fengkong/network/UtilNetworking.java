@@ -2,10 +2,7 @@ package com.weithink.fengkong.network;
 
 import android.util.Log;
 
-import com.weithink.fengkong.Constants;
-
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +15,6 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HostnameVerifier;
@@ -138,8 +134,8 @@ public class UtilNetworking {
             }
             //Inject local ip address for Jenkins script
             connection.setRequestProperty("Local-Ip", getIPAddress(true));
-            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            connection.setRequestProperty("Accept-Encoding", "gzip");//gzip
+//            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+//            connection.setRequestProperty("Accept-Encoding", "gzip");//gzip
 
             connection.setConnectTimeout(ONE_MINUTE);
             connection.setReadTimeout(ONE_MINUTE);
