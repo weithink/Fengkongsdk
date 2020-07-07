@@ -23,7 +23,6 @@ public class DateUtil {
     }
 
     public static long stampToDate(String s) {
-        String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date date = null;
         try {
@@ -46,5 +45,35 @@ public class DateUtil {
         }
         String da= sdf.format(newDate);
         return da;
+    }
+    public static long localToUTC(long localTime) {
+        long localTimeInMillis=localTime;
+        /** long时间转换成Calendar */
+        Calendar calendar= Calendar.getInstance();
+        calendar.setTimeInMillis(localTimeInMillis);
+        /** 取得时间偏移量 */
+        int zoneOffset = calendar.get(java.util.Calendar.ZONE_OFFSET);
+        /** 取得夏令时差 */
+        int dstOffset = calendar.get(java.util.Calendar.DST_OFFSET);
+        /** 从本地时间里扣除这些差量，即可以取得UTC时间*/
+        calendar.add(java.util.Calendar.MILLISECOND, -(zoneOffset + dstOffset));
+        /** 取得的时间就是UTC标准时间 */
+        Date utcDate=new Date(calendar.getTimeInMillis());
+        return utcDate.getTime();
+    }
+    public static Date localToUTC() {
+        long localTimeInMillis=new Date().getTime();
+        /** long时间转换成Calendar */
+        Calendar calendar= Calendar.getInstance();
+        calendar.setTimeInMillis(localTimeInMillis);
+        /** 取得时间偏移量 */
+        int zoneOffset = calendar.get(java.util.Calendar.ZONE_OFFSET);
+        /** 取得夏令时差 */
+        int dstOffset = calendar.get(java.util.Calendar.DST_OFFSET);
+        /** 从本地时间里扣除这些差量，即可以取得UTC时间*/
+        calendar.add(java.util.Calendar.MILLISECOND, -(zoneOffset + dstOffset));
+        /** 取得的时间就是UTC标准时间 */
+        Date utcDate=new Date(calendar.getTimeInMillis());
+        return utcDate;
     }
 }

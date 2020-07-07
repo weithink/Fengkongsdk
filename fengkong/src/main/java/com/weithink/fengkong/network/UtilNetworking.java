@@ -2,6 +2,7 @@ package com.weithink.fengkong.network;
 
 import android.util.Log;
 
+import com.weithink.fengkong.util.DateUtil;
 import com.weithink.fengkong.util.Encryption;
 
 import java.io.BufferedReader;
@@ -47,7 +48,7 @@ public class UtilNetworking {
 
     public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk, Object postBody) {
         String targetURL =  path;
-        String date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())).format(new Date());
+        String date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(DateUtil.localToUTC());
         try {
             connectionOptions.clientSdk = clientSdk;
 
@@ -188,6 +189,7 @@ public class UtilNetworking {
                     String bodys = (String) postBody;
                     Encryption.setKeyIv(date);
                     byte[] utf8bd = Encryption.encryptAES(bodys.getBytes("utf-8"));
+                    debug("utf8bd.length:"+utf8bd.length+"");
                     wr2.write(utf8bd);
                 }
             }

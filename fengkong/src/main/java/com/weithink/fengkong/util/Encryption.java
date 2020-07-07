@@ -25,6 +25,18 @@ public class Encryption {
 //        return rs;
         return encryptedData;
     }
+
+    public static String encryptAESWhitBase64(byte[] encryptString) throws Exception {
+        IvParameterSpec zeroIv = new IvParameterSpec(iv.getBytes("utf8"));
+        SecretKeySpec skey = new SecretKeySpec(key.getBytes("utf8"), "AES");
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, skey, zeroIv);
+        byte[] encryptedData = cipher.doFinal(encryptString);
+//        String rs = asHex(encryptedData);
+//        return rs;
+        return Base64.encode(encryptedData);
+    }
+
      private static String asHex(byte[] buf) {
         char[] HEX_CHARS = "0123456789abcdef".toCharArray();
         char[] chars = new char[2 * buf.length];
