@@ -30,8 +30,8 @@ public class DateUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long ts = date.getTime();;
-        return ts;
+        long ts = date.getTime();
+        return localToUTC(ts);
     }
 
     public static String dateToStamp(long date) {
