@@ -13,12 +13,12 @@ android {
         versionName "1.2.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+//        consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -45,9 +45,9 @@ dependencies {
 
     def work_version = "2.3.4"
     // (Java only)
-    implementation "androidx.work:work-runtime:$work_version"
+    api "androidx.work:work-runtime:$work_version"
     // optional - RxJava2 support
-    implementation "androidx.work:work-rxjava2:$work_version"
+    api "androidx.work:work-rxjava2:$work_version"
     // optional - GCMNetworkManager support
-    implementation "androidx.work:work-gcm:$work_version"
+    api "androidx.work:work-gcm:$work_version"
 }

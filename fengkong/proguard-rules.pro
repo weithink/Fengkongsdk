@@ -32,10 +32,10 @@
 -packageobfuscationdictionary ./proguard-socialism.txt
 
 # 混淆时所采用的算法(谷歌推荐算法)
-#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
 
 # 将文件来源重命名为“SourceFile”字符串
--renamesourcefileattribute SourceFile
+-renamesourcefileattribute abc
 
 # 保持注解不被混淆
 -keepattributes *Annotation*
@@ -164,4 +164,20 @@
 # 保持 CusorAdapter 类不被混淆
 -keep public class * extends android.widget.CusorAdapter{*;}
 
+# --------------------------------------------自定义保留区--------------------------------------------#
 
+#-keep public class com.weithink.fengkong.bean.PathInfo{*;}
+-keep class com.weithink.fengkong.WeithinkFengkong {
+    public static WeithinkFengkong getInstance();
+    public void syncData(***);
+}
+-keep class com.weithink.fengkong.bean.** {
+    void set*(***);
+    void set*(int, ***);
+
+    boolean is*();
+    boolean is*(int);
+
+    *** get*();
+    *** get*(int);
+}

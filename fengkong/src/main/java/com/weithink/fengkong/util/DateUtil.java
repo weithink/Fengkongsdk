@@ -1,5 +1,6 @@
 package com.weithink.fengkong.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,5 +20,31 @@ public class DateUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static long stampToDate(String s) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long ts = date.getTime();;
+        return ts;
+    }
+
+    public static String dateToStamp(long date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
+        DateFormat df = DateFormat.getDateInstance();
+        Date newDate = null;
+        try {
+            newDate = df.parse(String.valueOf(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String da= sdf.format(newDate);
+        return da;
     }
 }

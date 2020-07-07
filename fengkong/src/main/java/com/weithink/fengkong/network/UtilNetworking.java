@@ -2,6 +2,8 @@ package com.weithink.fengkong.network;
 
 import android.util.Log;
 
+import com.weithink.fengkong.util.Encryption;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,8 +14,11 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
@@ -32,7 +37,6 @@ public class UtilNetworking {
     static HostnameVerifier hostnameVerifier;
     static String ENCODING = "UTF-8";
 
-
     public static UtilNetworking.HttpResponse sendPostI(String path) {
         return sendPostI(path, null, null);
     }
@@ -43,11 +47,12 @@ public class UtilNetworking {
 
     public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk, Object postBody) {
         String targetURL =  path;
+        String date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())).format(new Date());
         try {
             connectionOptions.clientSdk = clientSdk;
 
             HttpsURLConnection connection = createPOSTHttpsURLConnection(
-                    targetURL, postBody, connectionOptions);
+                    targetURL, postBody, connectionOptions,date);
             UtilNetworking.HttpResponse httpResponse = readHttpResponse(connection);
 
             debug("Response: %s", httpResponse.response);
@@ -120,7 +125,7 @@ public class UtilNetworking {
     }
 
     public interface IConnectionOptions {
-        void applyConnectionOptions(HttpsURLConnection connection);
+        void applyConnectionOptions(HttpsURLConnection connection,String date);
     }
 
     static class ConnectionOptions implements IConnectionOptions {
@@ -128,14 +133,15 @@ public class UtilNetworking {
 
 
         @Override
-        public void applyConnectionOptions(HttpsURLConnection connection) {
+        public void applyConnectionOptions(HttpsURLConnection connection,String date) {
             if (clientSdk != null) {
                 connection.setRequestProperty("Client-SDK", clientSdk);
             }
             //Inject local ip address for Jenkins script
             connection.setRequestProperty("Local-Ip", getIPAddress(true));
-//            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-//            connection.setRequestProperty("Accept-Encoding", "gzip");//gzip
+            connection.setRequestProperty("date",  date);
+            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            connection.setRequestProperty("Accept-Encoding", "gzip");//gzip
 
             connection.setConnectTimeout(ONE_MINUTE);
             connection.setReadTimeout(ONE_MINUTE);
@@ -153,8 +159,7 @@ public class UtilNetworking {
     }
 
     static HttpsURLConnection createPOSTHttpsURLConnection(String urlString, Object postBody,
-                                                           IConnectionOptions connectionOptions)
-            throws IOException {
+                                                           IConnectionOptions connectionOptions,String date) {
         DataOutputStream wr = null;
         GZIPOutputStream wr2 = null;
         HttpsURLConnection connection = null;
@@ -164,7 +169,7 @@ public class UtilNetworking {
             URL url = new URL(urlString);
             connection = (HttpsURLConnection) url.openConnection();
 
-            connectionOptions.applyConnectionOptions(connection);
+            connectionOptions.applyConnectionOptions(connection,date);
 
             connection.setRequestMethod("POST");
             connection.setUseCaches(false);
@@ -181,13 +186,14 @@ public class UtilNetworking {
                 if (postBody != null && ((String) postBody).length() > 0) {
                     wr2 =  new GZIPOutputStream(connection.getOutputStream());
                     String bodys = (String) postBody;
-                    byte[] utf8bd = bodys.getBytes(ENCODING);
+                    Encryption.setKeyIv(date);
+                    byte[] utf8bd = Encryption.encryptAES(bodys.getBytes("utf-8"));
                     wr2.write(utf8bd);
                 }
             }
             return connection;
         } catch (Exception e) {
-            throw e;
+            e.printStackTrace();
         } finally {
             try {
                 if (wr != null) {
@@ -201,6 +207,7 @@ public class UtilNetworking {
             } catch (Exception e) {
             }
         }
+        return null;
     }
 
 
