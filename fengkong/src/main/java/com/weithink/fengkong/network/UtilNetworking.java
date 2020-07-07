@@ -48,7 +48,7 @@ public class UtilNetworking {
 
     public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk, Object postBody) {
         String targetURL =  path;
-        String date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(DateUtil.localToUTC());
+        String date = new Date().getTime()+"";
         try {
             connectionOptions.clientSdk = clientSdk;
 

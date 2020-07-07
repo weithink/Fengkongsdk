@@ -31,15 +31,15 @@ public class DateUtil {
             e.printStackTrace();
         }
         long ts = date.getTime();
-        return localToUTC(ts);
+        return ts;
     }
-
-    public static String dateToStamp(long date) {
+    //毫秒转 时间格式
+    public static String dateToStamp(String date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
         DateFormat df = DateFormat.getDateInstance();
         Date newDate = null;
         try {
-            newDate = df.parse(String.valueOf(date));
+            newDate = df.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

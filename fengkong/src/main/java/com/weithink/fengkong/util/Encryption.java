@@ -64,11 +64,14 @@ public class Encryption {
         key = getKey(keyAndIv);
         iv = getKey(keyAndIv);
     }
+
     public static String getKey(String tsmp) {
-        String dateStr = tsmp;
-        long convertDate = stampToDate(dateStr);
+        //时间格式
+        String datesdf = DateUtil.dateToStamp(tsmp);
+//        String dateStr = tsmp;
+        long convertDate = stampToDate(datesdf);
         long r = convertDate*10;
-        int ns = Integer.parseInt(dateStr.substring(dateStr.indexOf(".")+1));
+        int ns = Integer.parseInt(datesdf.substring(datesdf.indexOf(".")+1));
         r *= ns;
         String md5 = MD5(r+"");
         String sub = md5.substring(0, 16).toUpperCase();
