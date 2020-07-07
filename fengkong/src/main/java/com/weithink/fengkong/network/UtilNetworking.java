@@ -187,7 +187,9 @@ public class UtilNetworking {
                 if (postBody != null && ((String) postBody).length() > 0) {
                     wr2 =  new GZIPOutputStream(connection.getOutputStream());
                     String bodys = (String) postBody;
-                    Encryption.setKeyIv(date);
+                    String keystr = Encryption.setKeyIv(date);
+                    debug("key:>>>"+keystr);
+                    debug("date:>>>"+date);
                     byte[] utf8bd = Encryption.encryptAES(bodys.getBytes("utf-8"));
                     debug("utf8bd.length:"+utf8bd.length+"");
                     wr2.write(utf8bd);

@@ -60,16 +60,18 @@ public class Encryption {
         key = key1;
         iv = iv1;
     }
-    public static void setKeyIv(String keyAndIv) {
-        key = getKey(keyAndIv);
-        iv = getKey(keyAndIv);
+    public static String setKeyIv(String keyAndIv) {
+        String kestr = getKey(keyAndIv);
+        key = kestr;
+        iv = kestr;
+        return kestr;
     }
 
-    public static String getKey(String tsmp) {
-        String datesdf = tsmp;
+    private static String getKey(String tsmp) {
+        String dateStr =tsmp;
         long convertDate = Long.parseLong(tsmp);
         long r = convertDate*10;
-        int ns = Integer.parseInt(datesdf.substring(datesdf.length()-3));
+        int ns = Integer.parseInt(dateStr.substring(dateStr.length()-3));
         r *= ns;
         String md5 = MD5(r+"");
         String sub = md5.substring(0, 16).toUpperCase();
