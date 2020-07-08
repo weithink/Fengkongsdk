@@ -37,7 +37,7 @@ public class FileApi {
                 }
                 fileInfoList.add(fileInfo);
             } catch (Exception e) {
-                WeithinkFactory.getLogger().debug("exception = " + e.toString());
+                WeithinkFactory.getLogger().debug("exception = %s" , e.toString());
             }
         }
         return fileInfoList;

@@ -8,6 +8,8 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.weithink.fengkong.WeithinkFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -85,7 +87,7 @@ public class ContactHelper {
                 }
                 contacts.add(contact);
             }
-            Log.e("AAA>>>", "ContactHelper=====获取所有联系人耗时: " + (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + contacts.size());
+            WeithinkFactory.getLogger().error("AAA>>>ContactHelper=====获取所有联系人耗时: %s" , (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + contacts.size());
             cursor.close();
         }
         return contacts;
@@ -487,7 +489,7 @@ public class ContactHelper {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
                         count++;
-                        Log.e(TAG, "Name/Number : " + name + " - " + phoneNo);
+                        WeithinkFactory.getLogger().error(TAG+"Name/Number :%s " , name + " - " + phoneNo);
                     }
                     pCur.close();
                 }
@@ -496,7 +498,7 @@ public class ContactHelper {
         if (cur != null) {
             cur.close();
         }
-        Log.e(TAG, "getContactList: " + (System.currentTimeMillis() - startTime) + " -> Count: " + count);
+        WeithinkFactory.getLogger().error(TAG+"getContactList: %s" , (System.currentTimeMillis() - startTime) + " -> Count: " + count);
     }
 
     // Using ContactsContract.Data -> this take less time
@@ -539,10 +541,10 @@ public class ContactHelper {
                 if (entry.getValue() != null) {
                     count += entry.getValue().size();
                 }
-                Log.e(TAG, "Name/Number* : " + entry.getKey() + " - " + entry.getValue().toString());
+                WeithinkFactory.getLogger().error(TAG+"Name/Number* : %s" , entry.getKey() + " - " + entry.getValue().toString());
             }
 
-            Log.e(TAG, "getContactListNew: " + (System.currentTimeMillis() - startTime) + " -> Count: " + count);
+            WeithinkFactory.getLogger().error(TAG+"getContactListNew: %s " , (System.currentTimeMillis() - startTime) + " -> Count: " + count);
             cursor.close();
         }
     }

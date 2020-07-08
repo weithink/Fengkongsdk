@@ -1,9 +1,8 @@
 package com.loan.fengkongsdk;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFengkong;
@@ -21,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 //        String url = "https://riskdata.cash-sweet.com";
         String url = Constants.testUrl;
         WeithinkFengkong.getInstance().syncData("aaa.aa.aaa","1.0","012345","12345678901"
-                ,new ArrayList<LocationInfo>(),"aaa","321",url);
+                ,new ArrayList<LocationInfo>(),"aaa","111",url);
+//        WeithinkFactory.getLogger().setLogLevel(LogLevel.SUPRESS,true);
     }
 }

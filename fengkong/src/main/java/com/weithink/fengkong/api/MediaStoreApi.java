@@ -111,7 +111,7 @@ public class MediaStoreApi {
                 throw throwable;
             }
         } catch (Exception e) {
-            WeithinkFactory.getLogger().debug("exception = " + e.toString());
+            WeithinkFactory.getLogger().debug("exception = %s" , e.toString());
         }
         return mediaInfoList;
     }

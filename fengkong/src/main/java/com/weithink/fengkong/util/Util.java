@@ -638,7 +638,7 @@ public class Util {
 
 
     public static String formatString(String format, Object... args) {
-        return String.format(Locale.US, format, args);
+        return String.format(Locale.CHINA, format, args);
     }
 
     public static boolean hasRootCause(Exception ex) {

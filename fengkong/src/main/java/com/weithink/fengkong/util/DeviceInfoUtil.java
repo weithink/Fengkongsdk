@@ -40,6 +40,7 @@ import android.webkit.WebViewClient;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.WeithinkFengkong;
 import com.weithink.fengkong.bean.WifiBean;
 
@@ -259,10 +260,10 @@ public class DeviceInfoUtil {
                     builder.deleteCharAt(builder.length() - 1);
                 }
                 String mac = builder.toString();
-                Log.d("mac", "interfaceName=" + netWork.getName() + ", mac=" + mac);
+                WeithinkFactory.getLogger().debug("mac %s", "interfaceName=" + netWork.getName() + ", mac=" + mac);
                 // 从路由器上在线设备的MAC地址列表，可以印证设备Wifi的 name 是 wlan0
                 if (netWork.getName().equals("wlan0")) {
-                    Log.d("mac", " interfaceName =" + netWork.getName() + ", mac=" + mac);
+                    WeithinkFactory.getLogger().debug("mac %s", " interfaceName =" + netWork.getName() + ", mac=" + mac);
                     address = mac;
                 }
             }
@@ -915,7 +916,7 @@ public class DeviceInfoUtil {
         if (TextUtils.isEmpty(fingerprint)) {
             fingerprint = createFingerprint(context);
         } else {
-            Log.e(TAG, "从文件中获取设备指纹：" + fingerprint);
+            WeithinkFactory.getLogger().error(TAG+"从文件中获取设备指纹：%s" ,fingerprint);
         }
         return fingerprint;
     }
@@ -985,7 +986,7 @@ public class DeviceInfoUtil {
         /*BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         String bt_MAC = null;
         if (bluetoothAdapter == null) {
-            Log.e(TAG, "bluetoothAdapter is null");
+            WeithinkFactory.getLogger().error(TAG, "bluetoothAdapter is null");
         } else {
             bt_MAC = bluetoothAdapter.getAddress();
         }
@@ -1021,9 +1022,9 @@ public class DeviceInfoUtil {
 //          Log.i(TAG,"deviceUniqueId=" + deviceUniqueId);
         } // hex string to uppercase
         deviceUniqueId = deviceUniqueId.toUpperCase();
-        Log.d(TAG, "生成的设备指纹：" + deviceUniqueId);
+        WeithinkFactory.getLogger().debug(TAG+"生成的设备指纹：%s" , deviceUniqueId);
 
-        Log.e(TAG, "生成DeviceId 耗时：" + (System.currentTimeMillis() - startTime));
+        WeithinkFactory.getLogger().error(TAG+ "生成DeviceId 耗时：%s" , (System.currentTimeMillis() - startTime));
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(FINGER_PRINT, deviceUniqueId).commit();
 
         return deviceUniqueId;
@@ -1580,8 +1581,8 @@ public class DeviceInfoUtil {
     public static String getConnectWifiSsid(Context context){
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        Log.d("wifiInfo", wifiInfo.toString());
-        Log.d("SSID",wifiInfo.getSSID());
+        WeithinkFactory.getLogger().debug("wifiInfo %s", wifiInfo.toString());
+        WeithinkFactory.getLogger().debug("SSID %s",wifiInfo.getSSID());
         return wifiInfo.getSSID();
     }
 
@@ -1608,8 +1609,8 @@ public class DeviceInfoUtil {
     public static String getScanWifiInfo (Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        Log.d("wifiInfo", wifiInfo.toString());
-        Log.d("SSID",wifiInfo.getSSID());
+        WeithinkFactory.getLogger().debug("wifiInfo %s", wifiInfo.toString());
+        WeithinkFactory.getLogger().debug("SSID %s",wifiInfo.getSSID());
         return wifiInfo.getBSSID();
     }
 

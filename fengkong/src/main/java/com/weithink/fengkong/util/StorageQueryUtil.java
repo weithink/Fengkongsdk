@@ -10,6 +10,7 @@ import android.os.storage.StorageVolume;
 import android.util.Log;
 
 
+import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.bean.DeviceInfo;
 
 import java.io.File;
@@ -97,7 +98,7 @@ public class StorageQueryUtil {
                     if (type == 2) ;
                 }
             } catch (SecurityException e) {
-                Log.e("storage", "缺少权限：permission.PACKAGE_USAGE_STATS");
+                WeithinkFactory.getLogger().error("storage缺少权限：%s","permission.PACKAGE_USAGE_STATS");
             } catch (Exception e) {
                 e.printStackTrace();
                 queryWithStatFs();
@@ -116,10 +117,10 @@ public class StorageQueryUtil {
         long blockSize = statFs.getBlockSize();
         long availableCount = statFs.getAvailableBlocks();
         long freeBlocks = statFs.getFreeBlocks();
-        Log.d("storage", "=========");
-        Log.d("storage", "total = " + getUnit((float) (blockSize * blockCount), 1024.0F));
-        Log.d("storage", "available = " + getUnit((float) (blockSize * availableCount), 1024.0F));
-        Log.d("storage", "free = " + getUnit((float) (blockSize * freeBlocks), 1024.0F));
+        WeithinkFactory.getLogger().debug("storage %s", "=========");
+        WeithinkFactory.getLogger().debug("storage %s", "total = " + getUnit((float) (blockSize * blockCount), 1024.0F));
+        WeithinkFactory.getLogger().debug("storage %s", "available = " + getUnit((float) (blockSize * availableCount), 1024.0F));
+        WeithinkFactory.getLogger().debug("storage %s", "free = " + getUnit((float) (blockSize * freeBlocks), 1024.0F));
     }
 
     private static String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};

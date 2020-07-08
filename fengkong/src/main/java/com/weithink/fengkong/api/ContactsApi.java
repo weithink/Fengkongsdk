@@ -109,9 +109,9 @@ public class ContactsApi {
                 throw throwable;
             }
         } catch (Exception e) {
-            WeithinkFactory.getLogger().debug("exception = " + e.toString());
+            WeithinkFactory.getLogger().debug("exception = %s" ,e.toString());
         }
-        Log.e("AAA>>>","getCallsList=====获取所有通话记录耗时: " + (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + callsInfoList.size());
+        WeithinkFactory.getLogger().error("AAA>>>getCallsList=====获取所有通话记录耗时: %s" ,(System.currentTimeMillis() - currentTimeMillis) + "，共计：" + callsInfoList.size());
 
         return callsInfoList;
     }

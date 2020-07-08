@@ -1,14 +1,13 @@
 package com.weithink.fengkong.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import static com.weithink.fengkong.util.DateUtil.stampToDate;
 
 public class Encryption {
     static String key = "WRZWEZWUIE72$^$*";
@@ -16,8 +15,8 @@ public class Encryption {
     static String iv = "WRZWEZWUIE72$^$*";
 
     public static byte[] encryptAES(byte[] encryptString) throws Exception {
-        IvParameterSpec zeroIv = new IvParameterSpec(iv.getBytes("utf8"));
-        SecretKeySpec skey = new SecretKeySpec(key.getBytes("utf8"), "AES");
+        IvParameterSpec zeroIv = new IvParameterSpec(iv.getBytes("utf-8"));
+        SecretKeySpec skey = new SecretKeySpec(key.getBytes("utf-8"), "AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, skey, zeroIv);
         byte[] encryptedData = cipher.doFinal(encryptString);
@@ -27,14 +26,15 @@ public class Encryption {
     }
 
     public static String encryptAESWhitBase64(byte[] encryptString) throws Exception {
-        IvParameterSpec zeroIv = new IvParameterSpec(iv.getBytes("utf8"));
-        SecretKeySpec skey = new SecretKeySpec(key.getBytes("utf8"), "AES");
+        IvParameterSpec zeroIv = new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8));
+        SecretKeySpec skey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, skey, zeroIv);
         byte[] encryptedData = cipher.doFinal(encryptString);
 //        String rs = asHex(encryptedData);
 //        return rs;
-        return Base64.encode(encryptedData);
+        String str = Base64.encode(encryptedData);
+        return str;
     }
 
      private static String asHex(byte[] buf) {
@@ -86,7 +86,7 @@ public class Encryption {
             StringBuffer sb = new StringBuffer();
             for (byte b : buffer) {
                 int a = b & 0xff;
-                // Log.d(TAG, "" + a);
+                // WeithinkFactory.getLogger().debug(TAG, "" + a);
                 String hex = Integer.toHexString(a);
 
                 if (hex.length() == 1) {

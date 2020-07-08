@@ -30,7 +30,7 @@ public class StorageUtil {
 
     private StorageUtil() {
         Context context = WeithinkFengkong.getInstance().getContext();
-        WeithinkFactory.getLogger().debug("StorageUtil context ====== " + context);
+        WeithinkFactory.getLogger().debug("StorageUtil context ====== %s" , context);
         this.mPreferences = context.getSharedPreferences("WeithinkFengKong", 0);
     }
 

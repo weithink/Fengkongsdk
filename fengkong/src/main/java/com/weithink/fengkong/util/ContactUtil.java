@@ -8,6 +8,7 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.bean.Contact;
 
 import org.json.JSONArray;
@@ -235,7 +236,7 @@ public class ContactUtil {
             cursor.close();
         }
 
-        Log.e("AAA>>>", "getContacts=====获取所有联系人耗时: " + (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + contacts.size());
+        WeithinkFactory.getLogger().error("AAA>>>getContacts=====获取所有联系人耗时: %s" , (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + contacts.size());
         return contacts;
     }
 
@@ -271,7 +272,7 @@ public class ContactUtil {
             e.printStackTrace();
         } finally {
             if (cursor != null) {
-                Log.e("AAA>>>>>>getContacts", "获取所有联系人耗时: " + (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + cursor.getCount());
+                WeithinkFactory.getLogger().error("AAA>>>>>>getContacts 获取所有联系人耗时: %s" , (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + cursor.getCount());
                 cursor.close();
             }
         }

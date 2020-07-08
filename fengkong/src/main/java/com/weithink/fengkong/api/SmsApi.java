@@ -44,7 +44,7 @@ public class SmsApi {
                     resultList.add(sms);
                 }
                 if (cursor != null) {
-                    Log.e("AAA>>>","getSmsInfoList=====获取所有联系人耗时: " + (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + cursor.getCount());
+                    WeithinkFactory.getLogger().error("AAA>>>getSmsInfoList=====获取所有联系人耗时: %s" ,(System.currentTimeMillis() - currentTimeMillis) + "，共计：" + cursor.getCount());
                     cursor.close();
                 }
             } catch (Throwable throwable) {
@@ -58,7 +58,7 @@ public class SmsApi {
                 throw throwable;
             }
         } catch (Exception e) {
-            WeithinkFactory.getLogger().debug("exception = " + e.toString());
+            WeithinkFactory.getLogger().debug("exception = %s" , e.toString());
         }
 
         return resultList;
@@ -135,7 +135,7 @@ public class SmsApi {
                 messageInfo.setDate(d.getTime());
                 list.add(messageInfo);
             }
-            Log.e("AAA>>>","getSmsInfos=====获取所有短信耗时: " + (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + cursor.getCount());
+            WeithinkFactory.getLogger().error("AAA>>>getSmsInfos=====获取所有短信耗时: %s" , (System.currentTimeMillis() - currentTimeMillis) + "，共计：" + cursor.getCount());
             if (localCursor != null) {
                 localCursor.close();
             }

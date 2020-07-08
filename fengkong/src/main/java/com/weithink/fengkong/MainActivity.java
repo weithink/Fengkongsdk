@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 
 
     private void startService() {
-        Log.e("AAA>>>>", "startService");
+        WeithinkFactory.getLogger().error("AAA>> %s", "startService");
         DeviceInfoUtil.scanWifiList(WeithinkFengkong.getInstance().getContext());
 //        startService(new Intent((Context) this, CollectService.class));
         WeithinkFengkong.getInstance().execute();

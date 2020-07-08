@@ -1,11 +1,11 @@
 package com.weithink.fengkong.network;
 
-import android.util.Log;
-
-import com.weithink.fengkong.util.DateUtil;
+import com.weithink.fengkong.WeithinkFactory;
 import com.weithink.fengkong.util.Encryption;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,13 +15,11 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.zip.GZIPOutputStream;
+import java.util.zip.Deflater;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -56,10 +54,10 @@ public class UtilNetworking {
                     targetURL, postBody, connectionOptions,date);
             UtilNetworking.HttpResponse httpResponse = readHttpResponse(connection);
 
-            debug("Response: %s", httpResponse.response);
+            debug("Response: %S", httpResponse.response);
 
             httpResponse.headerFields = connection.getHeaderFields();
-            debug("Headers: %s", httpResponse.headerFields + "");
+            debug("Headers: %S", httpResponse.headerFields + "");
 
             return httpResponse;
         } catch (IOException e) {
@@ -142,6 +140,7 @@ public class UtilNetworking {
             connection.setRequestProperty("Local-Ip", getIPAddress(true));
             connection.setRequestProperty("date",  date);
             connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+//            connection.setRequestProperty("Content-Type", "text/plain");
             connection.setRequestProperty("Accept-Encoding", "gzip");//gzip
 
             connection.setConnectTimeout(ONE_MINUTE);
@@ -162,7 +161,8 @@ public class UtilNetworking {
     static HttpsURLConnection createPOSTHttpsURLConnection(String urlString, Object postBody,
                                                            IConnectionOptions connectionOptions,String date) {
         DataOutputStream wr = null;
-        GZIPOutputStream wr2 = null;
+//        MyGZIPOutputStream wr2 = null;
+        DataOutputStream wr2 = null;
         HttpsURLConnection connection = null;
 
         try {
@@ -185,14 +185,32 @@ public class UtilNetworking {
             }
             if (postBody instanceof String) {
                 if (postBody != null && ((String) postBody).length() > 0) {
-                    wr2 =  new GZIPOutputStream(connection.getOutputStream());
+                    wr2 =  new DataOutputStream(connection.getOutputStream());
                     String bodys = (String) postBody;
                     String keystr = Encryption.setKeyIv(date);
                     debug("key:>>>"+keystr);
                     debug("date:>>>"+date);
-                    byte[] utf8bd = Encryption.encryptAES(bodys.getBytes("utf-8"));
-                    debug("utf8bd.length:"+utf8bd.length+"");
+                    //压缩
+                    byte[] bodyByte = bodys.getBytes("utf-8");
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    MyGZIPOutputStream mg = new MyGZIPOutputStream(new BufferedOutputStream(bos));
+                    mg.write(bodyByte);
+                    mg.flush();
+                    mg.close();
+                    byte[] compressed = bos.toByteArray();
+//                    debug("compressed.length:"+compressed.length+"");
+                    byte[] utf8bd =Encryption.encryptAES(compressed);
+                    debug("compressed.length:"+utf8bd.length+"");
                     wr2.write(utf8bd);
+
+//                    File f = new File(Environment.getExternalStorageDirectory(), "1111.gz");
+//                    if (f.exists()){
+//                        f.createNewFile();
+//                    }
+//                    FileOutputStream ff = new FileOutputStream(f);
+//                    ff.write(compressed);
+//                    ff.flush();
+//                    ff.close();
                 }
             }
             return connection;
@@ -212,6 +230,36 @@ public class UtilNetworking {
             }
         }
         return null;
+    }
+
+    public static byte[] compress(byte[] data) {
+        byte[] output = new byte[0];
+
+        Deflater compresser = new Deflater();
+
+        compresser.reset();
+        compresser.setInput(data);
+        compresser.finish();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length);
+        try {
+            byte[] buf = new byte[1024];
+            while (!compresser.finished()) {
+                int i = compresser.deflate(buf);
+                bos.write(buf, 0, i);
+            }
+            output = bos.toByteArray();
+        } catch (Exception e) {
+            output = data;
+            e.printStackTrace();
+        } finally {
+            try {
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        compresser.end();
+        return output;
     }
 
 
@@ -286,14 +334,14 @@ public class UtilNetworking {
 
 
     static void error(String s, String msg) {
-        Log.e(s, msg + "");
+        WeithinkFactory.getLogger().error(s,msg);
     }
 
     static void debug(String s, String msg) {
-        Log.d(s, msg + "");
+        WeithinkFactory.getLogger().debug(s,msg);
     }
 
     static void debug(String msg) {
-        Log.d("AAA>>>>", msg + "");
+        WeithinkFactory.getLogger().debug("AAA>>>> %s",msg);
     }
 }

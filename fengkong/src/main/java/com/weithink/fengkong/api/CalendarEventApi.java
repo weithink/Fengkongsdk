@@ -40,7 +40,7 @@ public class CalendarEventApi {
                 throw throwable;
             }
         } catch (Exception e) {
-            WeithinkFactory.getLogger().debug("exception = " + e.toString());
+            WeithinkFactory.getLogger().debug("exception = %s" ,e.toString());
         }
         return resultList;
     }

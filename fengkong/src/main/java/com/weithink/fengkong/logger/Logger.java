@@ -18,9 +18,14 @@ public class Logger implements ILogger {
     public Logger() {
         isProductionEnvironment = false;
         logLevelLocked = false;
-        setLogLevel(LogLevel.INFO, isProductionEnvironment);
+        setLogLevel(LogLevel.VERBOSE, isProductionEnvironment);
     }
 
+    /**
+     * 设置是否输出log
+     * @param logLevel
+     * @param isProductionEnvironment
+     */
     @Override
     public void setLogLevel(LogLevel logLevel, boolean isProductionEnvironment) {
         if (logLevelLocked) {
@@ -50,6 +55,7 @@ public class Logger implements ILogger {
             try {
                 Log.v(LOGTAG, Util.formatString(message, parameters));
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(LOGTAG, Util.formatString(formatErrorMessage, message, Arrays.toString(parameters)));
             }
         }
@@ -64,6 +70,7 @@ public class Logger implements ILogger {
             try {
                 Log.d(LOGTAG, Util.formatString(message, parameters));
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(LOGTAG, Util.formatString(formatErrorMessage, message, Arrays.toString(parameters)));
             }
         }
@@ -78,6 +85,7 @@ public class Logger implements ILogger {
             try {
                 Log.i(LOGTAG, Util.formatString(message, parameters));
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(LOGTAG, Util.formatString(formatErrorMessage, message, Arrays.toString(parameters)));
             }
         }
@@ -92,6 +100,7 @@ public class Logger implements ILogger {
             try {
                 Log.w(LOGTAG, Util.formatString(message, parameters));
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(LOGTAG, Util.formatString(formatErrorMessage, message, Arrays.toString(parameters)));
             }
         }
@@ -103,6 +112,7 @@ public class Logger implements ILogger {
             try {
                 Log.w(LOGTAG, Util.formatString(message, parameters));
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(LOGTAG, Util.formatString(formatErrorMessage, message, Arrays.toString(parameters)));
             }
         }
@@ -118,6 +128,7 @@ public class Logger implements ILogger {
             try {
                 Log.e(LOGTAG, Util.formatString(message, parameters));
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(LOGTAG, Util.formatString(formatErrorMessage, message, Arrays.toString(parameters)));
             }
         }
@@ -132,6 +143,7 @@ public class Logger implements ILogger {
             try {
                 Log.println(Log.ASSERT, LOGTAG, Util.formatString(message, parameters));
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(LOGTAG, Util.formatString(formatErrorMessage, message, Arrays.toString(parameters)));
             }
         }

@@ -10,7 +10,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String state = intent.getSerializableExtra("connection_state").toString();
 
-        Log.d("AAA>>>VPN state ****", state.toString());
+        WeithinkFactory.getLogger().debug("AAA>>>VPN state **** %s", state.toString());
 
         if (state.equals("CONNECTING")) {
             // Do what needs to be done
