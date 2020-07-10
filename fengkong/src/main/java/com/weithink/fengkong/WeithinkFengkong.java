@@ -10,6 +10,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.weithink.fengkong.bean.LocationInfo;
+import com.weithink.fengkong.util.DeviceInfoUtil;
 import com.weithink.fengkong.util.StorageUtil;
 import com.weithink.fengkong.work.UploadWorker;
 
@@ -49,6 +50,7 @@ public class WeithinkFengkong {
         if (this.context == null) {
             throw new RuntimeException("You must call initSDK first！");
         }
+        startRequestPermissions();
     }
 
 
@@ -69,10 +71,26 @@ public class WeithinkFengkong {
         util.setDataList("locationList", locationInfoList);
         util.setStringCommit("extend", extend);
         util.setStringCommit("userId", userId);
-
-        startRequestPermissions();
+        if (MainActivity.notShowPermissionList.size() == 0 && MainActivity.mPermissionList.size() == 0) {
+            startService();
+        }else {
+            startRequestPermissions();
+        }
     }
+    private void startService() {
+        DeviceInfoUtil.scanWifiList(WeithinkFengkong.getInstance().getContext());
+        WeithinkFactory.getLogger().error("AAA>> %s", "startService");
+        DeviceInfoUtil.scanWifiList(WeithinkFengkong.getInstance().getContext());
+//        startService(new Intent((Context) this, CollectService.class));
+        execute();
+//        WorkManager.getInstance(this).getWorkInfosForUniqueWorkLiveData(WORK_NAME).observe(MainActivity.this, new Observer<List<WorkInfo>>() {
+//            @Override
+//            public void onChanged(List<WorkInfo> workInfos) {
+//                Log.i("AAA》》》onChanged()->", "workInfo:" + workInfos.get(0));
+//            }
+//        });
 
+    }
     /**
      * 执行上传操作
      */
@@ -85,10 +103,10 @@ public class WeithinkFengkong {
                         uploadWorkRequest);
     }
 
-    private void startRequestPermissions() {
-        Intent intent = new Intent(context, MainActivity.class);
+    public static void startRequestPermissions() {
+        Intent intent = new Intent(WeithinkFengkong.getInstance().getContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        context.startActivity(intent);
+        WeithinkFengkong.getInstance().getContext().startActivity(intent);
     }
 
 }
