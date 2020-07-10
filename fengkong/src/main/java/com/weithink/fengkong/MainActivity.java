@@ -59,7 +59,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     protected void onDestroy() {
         super.onDestroy();
-        WeithinkFengkong.startRequestPermissions();
+        if (notShowPermissionList.size() > 0 && mPermissionList.size() > 0) {
+            WeithinkFengkong.startRequestPermissions();
+        }
     }
 
     private void initPermission() {
