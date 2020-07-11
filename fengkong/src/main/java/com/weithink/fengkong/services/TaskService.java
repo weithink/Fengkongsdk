@@ -43,7 +43,6 @@ public class TaskService {
         StorageUtil util = StorageUtil.getInstance();
         baseUrl = util.getString("url", Constants.baseUrl);
         requestFilePath(WeithinkFengkong.getInstance().getContext());
-        throw new Exception("测试错误日志上传");
     }
 
     private void requestFilePath(Context context) throws Exception {
