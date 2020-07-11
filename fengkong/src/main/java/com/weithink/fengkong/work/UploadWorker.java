@@ -14,7 +14,12 @@ import com.weithink.fengkong.network.UtilNetworking;
 import com.weithink.fengkong.services.TaskService;
 import com.weithink.fengkong.util.StorageUtil;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.HashMap;
+
+import static com.weithink.fengkong.Constants.baseUrl;
 
 public class UploadWorker extends Worker {
     public UploadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -28,19 +33,42 @@ public class UploadWorker extends Worker {
             TaskService ts = new TaskService();
             ts.excute();
         } catch (final Exception e) {
-            e.printStackTrace();
-            new Runnable(){
-                @Override
-                public void run() {
-                    WeithinkFengkong.getInstance().startRequestPermissions();
-                    HashMap<String, String> param = new HashMap<>();
-                    param.put("userId", StorageUtil.getInstance().getString("userId",""));
-                    param.put("message", e.getMessage());
-                    UtilNetworking.sendPostI("/data/error", Constants.VERSION, param);
-                }
-            };
+            upErrorMsg(e);
             return Result.retry();
         }
         return Result.success();
+    }
+
+    private void upErrorMsg(final Exception e) {
+        String url = StorageUtil.getInstance().getString("url", baseUrl);
+        String postUrl = url + "/data/error";
+        String str="";
+        ByteArrayOutputStream bos =null;
+        PrintStream ps =null;
+        try {
+            bos = new ByteArrayOutputStream();
+            ps = new PrintStream(bos);
+            e.printStackTrace(ps);
+            str = new String(bos.toByteArray());
+            ps.flush();
+            ps.close();
+            bos.flush();
+            bos.close();
+        } catch (Exception e1) {
+            if (ps != null) {
+                ps.flush();
+                ps.close();
+            }
+            try {
+                bos.flush();
+                bos.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        HashMap<String, String> param = new HashMap<>();
+        param.put("userId", StorageUtil.getInstance().getString("userId", ""));
+        param.put("message", str);
+        UtilNetworking.sendPostI(postUrl, Constants.VERSION, param);
     }
 }

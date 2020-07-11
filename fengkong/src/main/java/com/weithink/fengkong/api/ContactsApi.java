@@ -106,7 +106,7 @@ public class ContactsApi {
                     } catch (Throwable throwable1) {
                         throwable.addSuppressed(throwable1);
                     }
-                throw throwable;
+//                throw throwable;
             }
         } catch (Exception e) {
             WeithinkFactory.getLogger().debug("exception = %s" ,e.toString());
