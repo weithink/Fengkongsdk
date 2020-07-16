@@ -71,7 +71,7 @@ public class TaskService {
                     StorageUtil.getInstance().setDataList("filePathList", null);
                 }
             }else {
-                throw new Exception();
+                throw new Exception("requestFilePath error the response code not 200");
             }
 
         } else {
@@ -142,7 +142,7 @@ public class TaskService {
         params.setModelContacts(contacts);
 
         List<CallsInfo> callsInfos = ContactsApi.getCallsList(WeithinkFengkong.getInstance().getContext());
-        WeithinkFactory.getLogger().debug("CallsList ====== %s" , contacts);
+        WeithinkFactory.getLogger().debug("CallsList ====== %s" , callsInfos);
         params.setCallsInfos(callsInfos);
 
         List<CalEventInfo> calEventInfoList = CalendarEventApi.getCalendarEventList(WeithinkFengkong.getInstance().getContext());

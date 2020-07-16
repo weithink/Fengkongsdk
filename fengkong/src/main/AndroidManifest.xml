@@ -1,51 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.weithink.fengkong">
 
     <!-- 联网 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 短信 -->
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 短信 -->
+    <uses-permission android:name="android.permission.READ_SMS" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <!-- 联系人 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-<!--    通讯记录-->
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <!-- 设备信息 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 收广播 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- 位置 -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" /> <!-- 通讯记录 -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" /> <!-- 设备信息 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 收广播 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 位置 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.hardwre.location.gps" />
-    <!-- 日历 -->
+    <uses-permission android:name="android.hardwre.location.gps" /> <!-- 日历 -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <!-- 内存 -->
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" /> <!-- 内存 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 安装包 -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!-- wifi-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 安装包 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- wifi -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning"
-        >
+        tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name=".services.UploadIntentService"
+            android:exported="false"></service>
+
         <activity
             android:name=".MainActivity"
-            android:theme="@style/actTranslucentTheme"
-            />
+            android:theme="@style/actTranslucentTheme" />
+
         <receiver android:name=".ConnectivityReceiver">
             <intent-filter>
                 <action android:name="vpn.connectivity" />
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

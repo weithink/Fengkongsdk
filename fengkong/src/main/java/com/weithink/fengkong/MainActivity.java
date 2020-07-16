@@ -3,27 +3,22 @@ package com.weithink.fengkong;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.PermissionInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.weithink.fengkong.util.DeviceInfoUtil;
+import com.weithink.fengkong.services.UploadIntentService;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.http.PUT;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private LinearLayout content_box;
@@ -127,6 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
      * 权限获取成果
      */
     private void permissionOk() {
+//        UploadIntentService.startActionBaz(this, "", "");
         finish();
     }
 

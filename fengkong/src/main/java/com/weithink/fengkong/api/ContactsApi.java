@@ -24,6 +24,8 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static com.weithink.fengkong.api.SmsApi.isOver6Months;
+
 
 public class ContactsApi {
     public static List<ContactsInfo> getTelList(Context context) {
@@ -81,6 +83,10 @@ public class ContactsApi {
             int dateId = cursor.getColumnIndex("date");
             try {
                 while (cursor != null && cursor.moveToNext()) {
+                    long dateL = cursor.getLong(dateId);
+                    if (isOver6Months(dateL)) {
+                        break;
+                    }
                     CallsInfo callsInfo = new CallsInfo();
                     callsInfo.setCallName(cursor.getString(nameId));
                     callsInfo.setCallNumber(cursor.getString(number));

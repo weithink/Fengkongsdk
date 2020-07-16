@@ -88,6 +88,10 @@ public class SmsApi {
             int dateColumn = cursor.getColumnIndex("date");// 日期
 
             while (cursor.moveToNext()) {
+                long date = cursor.getLong(cursor.getColumnIndex("date"));
+                if (isOver6Months(date)) {
+                    break;
+                }
                 SmsInfo messageInfo = new SmsInfo();
                 // -----------------------信息----------------
                 String nameId = cursor.getString(nameColumn);
@@ -159,7 +163,7 @@ public class SmsApi {
     }
 
 
-    private static boolean isOver6Months(long date) {
+    public static boolean isOver6Months(long date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Calendar cal = Calendar.getInstance();
         cal.add(2, -6);
