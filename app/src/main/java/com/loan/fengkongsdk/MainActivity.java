@@ -18,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //        String url = "https://riskdata.cash-sweet.com";
-        String url = Constants.testUrl;
+        String url = "https://riskdata.cashsweets.com";
+//        String url = Constants.testUrl;
         WeithinkFengkong.getInstance().syncData("aaa.aa.aaa","1.0","012345","12345678901"
                 ,new ArrayList<LocationInfo>(),"aaa","111",url);
 //        WeithinkFactory.getLogger().setLogLevel(LogLevel.SUPRESS,true);

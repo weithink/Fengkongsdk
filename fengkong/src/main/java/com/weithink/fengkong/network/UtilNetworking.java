@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.Deflater;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -272,16 +273,15 @@ public class UtilNetworking {
 
             httpResponse.responseCode = connection.getResponseCode();
             InputStream inputStream;
-
             if (httpResponse.responseCode >= 400) {
                 inputStream = connection.getErrorStream();
             } else {
                 inputStream = connection.getInputStream();
             }
-//            String encoding = connection.getContentEncoding();
-//            if (encoding != null && encoding.contains("gzip")) {
-//                inputStream = new GZIPInputStream(inputStream);
-//            }
+            String encoding = connection.getContentEncoding();
+            if (encoding != null && encoding.contains("gzip")) {
+                inputStream = new GZIPInputStream(inputStream);
+            }
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
