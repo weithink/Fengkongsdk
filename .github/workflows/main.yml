@@ -31,12 +31,7 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
-        
-apk:
-  name: Generate APK
-  runs-on: ubuntu-18.04
-
-  steps:
+    - name: build apk
     - uses: actions/checkout@v1
     - name: set up JDK 1.8
       uses: actions/setup-java@v1
@@ -49,3 +44,4 @@ apk:
       with:
         name: app
         path: app/build/outputs/apk/release/app-relase.apk
+  
