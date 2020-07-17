@@ -31,13 +31,6 @@
 #       run: |
 #         echo Add other actions to build,
 #         echo test, and deploy your project.
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-    
--name: "Build Android project"
-  uses: vgaidarji/android-github-actions-build@v1.0
-  with:
-    args: "./gradlew assemble"
+- name: Android Build
+  uses: vgaidarji/android-github-actions-build@v1.0.1
+
