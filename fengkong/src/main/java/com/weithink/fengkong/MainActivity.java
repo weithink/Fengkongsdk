@@ -35,7 +35,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             "android.permission.READ_PHONE_STATE",
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE",
-            "android.permission.READ_CALL_LOG",
             "android.permission.ACCESS_WIFI_STATE",
             "android.permission.ACCESS_NETWORK_STATE",
 

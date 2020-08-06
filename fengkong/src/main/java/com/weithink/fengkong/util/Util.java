@@ -1,5 +1,6 @@
 package com.weithink.fengkong.util;
 
+import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -18,6 +19,7 @@ import android.telephony.TelephonyManager;
 import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.OnDeviceIdsRead;
 import com.weithink.fengkong.WeithinkFactory;
+import com.weithink.fengkong.WeithinkFengkong;
 import com.weithink.fengkong.logger.ILogger;
 import com.weithink.fengkong.scheduler.SingleThreadFutureScheduler;
 
@@ -38,6 +40,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -50,6 +53,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static com.weithink.fengkong.Constants.MD5;
 import static com.weithink.fengkong.Constants.SHA1;
 import static com.weithink.fengkong.Constants.SHA256;
@@ -701,5 +705,37 @@ public class Util {
         return splitted[0];
     }
 
-
+    /**
+     * 判断Activity是否活动
+     * @param context
+     * @param activityName
+     * @return
+     */
+    private boolean isMainActivityAlive(Context context, String activityName){
+        ActivityManager am = (ActivityManager)context.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
+        for (ActivityManager.RunningTaskInfo info : list) {
+            // 注意这里的 topActivity 包含 packageName和className，可以打印出来看看
+            if (info.topActivity.toString().equals(activityName) || info.baseActivity.toString().equals(activityName)) {
+//                Log.i(TAG,info.topActivity.getPackageName() + " info.baseActivity.getPackageName()="+info.baseActivity.getPackageName());
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * 检测某Activity是否在当前Task的栈顶
+     */
+    private boolean isTopActivity(String activityName){
+        ActivityManager manager = (ActivityManager) WeithinkFengkong.getInstance().getContext().getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
+        String cmpNameTemp = null;
+        if(runningTaskInfos != null){
+            cmpNameTemp = runningTaskInfos.get(0).topActivity.toString();
+        }
+        if(cmpNameTemp == null){
+            return false;
+        }
+        return cmpNameTemp.equals(activityName);
+    }
 }

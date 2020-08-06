@@ -8,8 +8,10 @@
     <uses-permission android:name="android.permission.READ_SMS" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <!-- 联系人 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" /> <!-- 通讯记录 -->
-    <uses-permission android:name="android.permission.READ_CALL_LOG" /> <!-- 设备信息 -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <!-- 通讯记录 -->
+<!--    <uses-permission android:name="android.permission.READ_CALL_LOG" /> -->
+    <!-- 设备信息 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 收广播 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 位置 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

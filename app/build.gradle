@@ -40,3 +40,6 @@ dependencies {
     implementation project(path: ':fengkong')
 //    implementation(name: 'fengkong-release',ext: 'aar')
 }
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

@@ -1,6 +1,11 @@
 package com.weithink.fengkong.network;
 
+import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
+import com.weithink.fengkong.WeithinkFengkong;
+import com.weithink.fengkong.api.DeviceInfoApi;
+import com.weithink.fengkong.bean.AppInfo;
+import com.weithink.fengkong.util.AppInfoUtils;
 import com.weithink.fengkong.util.Encryption;
 
 import java.io.BufferedOutputStream;
@@ -11,13 +16,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.zip.Deflater;
 import java.util.zip.GZIPInputStream;
@@ -46,25 +54,25 @@ public class UtilNetworking {
     }
 
     public static UtilNetworking.HttpResponse sendPostI(String path, String clientSdk, Object postBody) {
-        String targetURL =  path;
-        String date = new Date().getTime()+"";
+        String targetURL = WeithinkFengkong.getInstance().getBaseUrl()+path;
+        String date = new Date().getTime() + "";
         try {
             connectionOptions.clientSdk = clientSdk;
 
             HttpsURLConnection connection = createPOSTHttpsURLConnection(
-                    targetURL, postBody, connectionOptions,date);
+                    targetURL, postBody, connectionOptions, date);
             UtilNetworking.HttpResponse httpResponse = readHttpResponse(connection);
 
-            debug("Response: %S", httpResponse.response);
+            debug("Response: %S \nrequestUrl： %S ", httpResponse.response,targetURL );
 
             httpResponse.headerFields = connection.getHeaderFields();
             debug("Headers: %S", httpResponse.headerFields + "");
 
             return httpResponse;
         } catch (IOException e) {
-            e.getMessage();
+            e.printStackTrace();
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
         }
         return null;
     }
@@ -125,7 +133,7 @@ public class UtilNetworking {
     }
 
     public interface IConnectionOptions {
-        void applyConnectionOptions(HttpsURLConnection connection,String date);
+        void applyConnectionOptions(HttpsURLConnection connection, String date);
     }
 
     static class ConnectionOptions implements IConnectionOptions {
@@ -133,16 +141,20 @@ public class UtilNetworking {
 
 
         @Override
-        public void applyConnectionOptions(HttpsURLConnection connection,String date) {
+        public void applyConnectionOptions(HttpsURLConnection connection, String date) {
             if (clientSdk != null) {
                 connection.setRequestProperty("Client-SDK", clientSdk);
             }
             //Inject local ip address for Jenkins script
             connection.setRequestProperty("Local-Ip", getIPAddress(true));
-            connection.setRequestProperty("date",  date);
+            connection.setRequestProperty("date", date);
             connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 //            connection.setRequestProperty("Content-Type", "text/plain");
             connection.setRequestProperty("Accept-Encoding", "gzip");//gzip
+
+            connection.setRequestProperty("transactionId", AppInfoUtils.getTransId());
+            connection.setRequestProperty("sdkVersion", AppInfoUtils.getSdkVersion());
+            connection.setRequestProperty("appPackageName", AppInfoUtils.getPackageName());
 
             connection.setConnectTimeout(ONE_MINUTE);
             connection.setReadTimeout(ONE_MINUTE);
@@ -159,8 +171,9 @@ public class UtilNetworking {
         }
     }
 
+
     static HttpsURLConnection createPOSTHttpsURLConnection(String urlString, Object postBody,
-                                                           IConnectionOptions connectionOptions,String date) {
+                                                           IConnectionOptions connectionOptions, String date) {
         DataOutputStream wr = null;
 //        MyGZIPOutputStream wr2 = null;
         DataOutputStream wr2 = null;
@@ -171,7 +184,7 @@ public class UtilNetworking {
             URL url = new URL(urlString);
             connection = (HttpsURLConnection) url.openConnection();
 
-            connectionOptions.applyConnectionOptions(connection,date);
+            connectionOptions.applyConnectionOptions(connection, date);
 
             connection.setRequestMethod("POST");
             connection.setUseCaches(false);
@@ -186,11 +199,11 @@ public class UtilNetworking {
             }
             if (postBody instanceof String) {
                 if (postBody != null && ((String) postBody).length() > 0) {
-                    wr2 =  new DataOutputStream(connection.getOutputStream());
+                    wr2 = new DataOutputStream(connection.getOutputStream());
                     String bodys = (String) postBody;
                     String keystr = Encryption.setKeyIv(date);
-                    debug("key:>>>"+keystr);
-                    debug("date:>>>"+date);
+                    debug("key:>>>" + keystr);
+                    debug("date:>>>" + date);
                     //压缩
                     byte[] bodyByte = bodys.getBytes("utf-8");
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -200,8 +213,8 @@ public class UtilNetworking {
                     mg.close();
                     byte[] compressed = bos.toByteArray();
 //                    debug("compressed.length:"+compressed.length+"");
-                    byte[] utf8bd =Encryption.encryptAES(compressed);
-                    debug("compressed.length:"+utf8bd.length+"");
+                    byte[] utf8bd = Encryption.encryptAES(compressed);
+                    debug("compressed.length:" + utf8bd.length + "");
                     wr2.write(utf8bd);
 
 //                    File f = new File(Environment.getExternalStorageDirectory(), "1111.gz");
@@ -291,8 +304,12 @@ public class UtilNetworking {
                 sb.append(line);
             }
         } catch (Exception e) {
-            error("Failed to read response. (%s)", e.getMessage());
-            throw e;
+            if (e.getMessage() == null) {
+                error("Failed to read response. (%S)",e.getClass().getSimpleName() );
+            }else {
+                error("Failed to read response. (%S)", e.getMessage());
+            }
+            e.printStackTrace();
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -327,6 +344,7 @@ public class UtilNetworking {
             }
         } catch (Exception ex) {
             error("Failed to read ip address (%s)", ex.getMessage());
+            ex.printStackTrace();
         }
 
         return "";
@@ -334,14 +352,14 @@ public class UtilNetworking {
 
 
     static void error(String s, String msg) {
-        WeithinkFactory.getLogger().error(s,msg);
+        WeithinkFactory.getLogger().error(s, msg);
     }
 
-    static void debug(String s, String msg) {
-        WeithinkFactory.getLogger().debug(s,msg);
+    static void debug(String s, Object... msg) {
+        WeithinkFactory.getLogger().debug(s, msg);
     }
 
     static void debug(String msg) {
-        WeithinkFactory.getLogger().debug("AAA>>>> %s",msg);
+        WeithinkFactory.getLogger().debug("AAA>>>> %s", msg);
     }
 }

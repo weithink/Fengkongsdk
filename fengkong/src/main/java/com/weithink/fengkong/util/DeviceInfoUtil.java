@@ -70,10 +70,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.WIFI_SERVICE;
@@ -1490,32 +1487,7 @@ public class DeviceInfoUtil {
 
     }
 
-    public static void getSyn() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //创建OkHttpClient对象
-                    OkHttpClient client = new OkHttpClient();
-                    //创建Request
-                    Request request = new Request.Builder()
-                            .url("https://myip.ipip.net")//访问连接
-                            .get()
-                            .build();
-                    //创建Call对象
-                    Call call = client.newCall(request);
-                    //通过execute()方法获得请求响应的Response对象
-                    Response response = call.execute();
-                    if (response.isSuccessful()) {
-                        //处理网络请求的响应，处理UI需要在UI线程中处理
-                        //...
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
+
 
 
     /**
