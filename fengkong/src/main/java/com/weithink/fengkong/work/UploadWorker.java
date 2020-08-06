@@ -11,6 +11,7 @@ import androidx.work.WorkerParameters;
 
 import com.weithink.fengkong.Constants;
 import com.weithink.fengkong.WeithinkFactory;
+import com.weithink.fengkong.network.ErrUtils;
 import com.weithink.fengkong.network.UtilNetworking;
 import com.weithink.fengkong.services.TaskService;
 import com.weithink.fengkong.util.StorageUtil;
@@ -34,7 +35,7 @@ public class UploadWorker extends Worker {
             String userId = util.getString("userId","");
             //获取分发参数进行操作
             String info_type = getInputData().getString(Constants.DataType.INFO_TYPE);
-            if (null == info_type) {
+            if (null == info_type || "".equals(userId)) {
                 return Result.retry();
             }
             UtilNetworking.HttpResponse response = null;
@@ -62,7 +63,7 @@ public class UploadWorker extends Worker {
             }
             if (response == null||response.responseCode!=200) {
                 WeithinkFactory.getLogger().debug("上传数据错误：数据类型：%S Response : %s ",info_type,response.response);
-                upErrorMsg(response.response);
+                ErrUtils.upErrorMsg(response.response);
                 return Result.retry();
             }
             if (data != null) {
@@ -71,55 +72,10 @@ public class UploadWorker extends Worker {
             return Result.success();
         } catch (final Exception e) {
             e.printStackTrace();
-            upErrorMsg(e);
+            ErrUtils.upErrorMsg(e);
             return Result.retry();
         }
     }
 
-    private void upErrorMsg(final Exception e) {
-        String url = StorageUtil.getInstance().getString("url", "");
-        String userId = StorageUtil.getInstance().getString("userId", "");
-        if (TextUtils.isEmpty(url)) return;
-        String postUrl = "/data/error?userId=" + userId;
-        String str = "";
-        ByteArrayOutputStream bos = null;
-        PrintStream ps = null;
-        try {
-            bos = new ByteArrayOutputStream();
-            ps = new PrintStream(bos);
-            e.printStackTrace(ps);
-            str = new String(bos.toByteArray());
-            ps.flush();
-            ps.close();
-            bos.flush();
-            bos.close();
-        } catch (Exception e1) {
-            if (ps != null) {
-                ps.flush();
-                ps.close();
-            }
-            try {
-                bos.flush();
-                bos.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        HashMap<String, String> param = new HashMap<>();
-        param.put("userId", StorageUtil.getInstance().getString("userId", ""));
-        param.put("message", str);
-        UtilNetworking.sendPostI(postUrl, Constants.VERSION, param);
-    }
-    private void upErrorMsg(String  msg) {
-        String url = StorageUtil.getInstance().getString("url", "");
-        String userId = StorageUtil.getInstance().getString("userId", "");
-        if (TextUtils.isEmpty(url)) return;
-        String postUrl =  "/data/error?userId=" + userId;
-        String str = ""+msg;
 
-        HashMap<String, String> param = new HashMap<>();
-        param.put("userId", StorageUtil.getInstance().getString("userId", ""));
-        param.put("message", str);
-        UtilNetworking.sendPostI(postUrl, Constants.VERSION, param);
-    }
 }

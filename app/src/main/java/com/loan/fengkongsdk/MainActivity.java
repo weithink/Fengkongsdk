@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        WeithinkFengkong.getInstance().autoSyncData("2821");
+        WeithinkFengkong.getInstance().autoSyncData("119");
 //        WeithinkFactory.getLogger().setLogLevel(LogLevel.SUPRESS,true);
     }
 }

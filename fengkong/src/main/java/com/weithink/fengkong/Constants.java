@@ -10,7 +10,7 @@ public interface Constants {
     String testUrl = "https://47.92.149.227:8199";
 //    String baseUrl = "https://riskdata.cashsweet.net";
     String WORK_NAME = "weithink";
-    String VERSION = "1.2.4";
+    String VERSION = "2.0";
     Uri CALLURI = CallLog.Calls.CONTENT_URI;
     Uri CALENDAREVENT_URI = CalendarContract.Events.CONTENT_URI;
     Uri SMS_URI = Telephony.Sms.CONTENT_URI;
@@ -30,7 +30,7 @@ public interface Constants {
     String SHA256 = "SHA-256";
     String FB_AUTH_REGEX = "^(fb|vk)[0-9]{5,}[^:]*://authorize.*access_token=.*";
 
-
+    String DATA_STATUS = "data_status";
     interface DataType{
         /**
          * * 1.app

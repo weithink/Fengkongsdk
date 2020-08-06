@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.weithink.fengkong.services.UploadIntentService;
 
 import java.util.ArrayList;
 import java.util.List;

