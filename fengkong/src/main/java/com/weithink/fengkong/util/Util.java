@@ -738,4 +738,8 @@ public class Util {
         }
         return cmpNameTemp.equals(activityName);
     }
+
+    public static boolean isEmpty(CharSequence str) {
+        return str == null || str.length() == 0;
+    }
 }

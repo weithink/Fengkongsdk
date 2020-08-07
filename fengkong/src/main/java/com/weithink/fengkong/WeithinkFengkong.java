@@ -84,12 +84,10 @@ public class WeithinkFengkong {
         new GetStatusTask(){
 
             @Override
-            public void onPostResult(String s) {
-                if (!"".equals(s)) {
-                    UploadStatus us = new Gson().fromJson(s, UploadStatus.class);
-                    myExecute(us);
+            public void onPostResult(UploadStatus s) {
+                if (null != s) {
+                    myExecute(s);
                 }
-
             }
         }.execute(userId);
     }
